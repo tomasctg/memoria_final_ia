@@ -1,184 +1,130 @@
-\chapter{Introducción específica} % Main chapter title
+\chapter{Introducción específica}
+\label{chap:introduccion_especifica}
 
-\label{Chapter2}
+En este capítulo se presentan los fundamentos teóricos que sustentan la arquitectura de optimización del proyecto. Se detalla el modelado híbrido de ''caja gris'', la formulación matemática del problema como un MINLP, la teoría de los Algoritmos Genéticos como solución metaheurística y el Método de Funciones de Penalización para el manejo de restricciones.
 
-%----------------------------------------------------------------------------------------
-%	SECTION 1
-%----------------------------------------------------------------------------------------
-Todos los capítulos deben comenzar con un breve párrafo introductorio que indique cuál es el contenido que se encontrará al leerlo.  La redacción sobre el contenido de la memoria debe hacerse en presente y todo lo referido al proyecto en pasado, siempre de modo impersonal.
+\section{Teoría del modelado híbrido: corrección de residuales}
+\label{sec:teoria_modelado_hibrido}
 
-\section{Estilo y convenciones}
-\label{sec:ejemplo}
+La simulación de sistemas físicos complejos, como lo es un sistema hidráulico, se aborda generalmente desde dos enfoques principales \citep{ref7}.
 
-\subsection{Uso de mayúscula inicial para los título de secciones}
+El primer enfoque es el modelado de ''Caja blanca'' (\textit{White-Box}), de naturaleza determinística, basado en leyes físicas de la mecánica de fluidos. \citep{ref7, ref8}. El motor de simulación hidráulico \texttt{EPANET} es un ejemplo representativo de este enfoque \citep{ref9, ref10}. La ventaja principal de los modelos de caja blanca es su interpretabilidad y la garantía de predicciones físicamente consistentes. Sin embargo, los modelos que se basan únicamente en leyes físicas tienen una limitación fundamental: debido a simplificaciones, inevitablemente producen desviaciones significativas, o sesgos, en comparación con la realidad \citep{ref4, ref5}. Estos sesgos surgen de dinámicas no modeladas y de la incertidumbre en los parámetros intrínsecos, como la rugosidad exacta de las tuberías (el coeficiente $C$ en la ecuación de Hazen-Williams) o las pérdidas de carga menores no contempladas en el modelo .
 
-Si en el texto se hace alusión a diferentes partes del trabajo referirse a ellas como capítulo, sección o subsección según corresponda. Por ejemplo: ``En el capítulo \ref{Chapter1} se explica tal cosa'', o ``En la sección \ref{sec:ejemplo} se presenta lo que sea'', o ``En la subsección \ref{subsec:ejemplo} se discute otra cosa''.
+El segundo enfoque es el modelado de ''Caja negra'' (\textit{Black-Box}). Estos modelos son de naturaleza estocástica, como las redes neuronales (NN) o los perceptrones multicapa (MLP), que mapean entradas a salidas basándose puramente en datos observados \citep{ref7, ref8}. Su fortaleza es la capacidad de modelar relaciones no lineales extremadamente complejas sin necesidad de conocer el modelo físico del sistema \citep{ref6}. Sin embargo, sus desventajas son críticas para sistemas de ingeniería. Primero, requieren volúmenes de datos de entrenamiento que a menudo son muy grandes \citep{ref4, ref5}. Segundo, y más importante, son propensos a generar predicciones que pueden ser físicamente inconsistentes, como violar la conservación de masa, un riesgo inaceptable para un sistema de control de recursos hídricos .
 
-Cuando se quiere poner una lista tabulada, se hace así:
+Como solución, en este proyecto se propone un modelado de ''Caja Gris'' (\textit{Gray-Box}), un paradigma que busca combinar las fortalezas de ambos enfoques\citep{ref6}. Específicamente, se implementa la arquitectura de corrección de residuales .
 
-\begin{itemize}
-	\item Este es el primer elemento de la lista.
-	\item Este es el segundo elemento de la lista.
-\end{itemize}
+En este paradigma, el modelo de inteligencia artificial no intenta aprender la totalidad del sistema desde cero. En su lugar, el modelo físico ($f_{fisico}$) proporciona la predicción principal y la robustez, mientras que el modelo de IA ($f_{AI}$) tiene una tarea mucho más acotada y factible: aprender y predecir el error residual (el sesgo sistemático) del modelo físico \citep{ref5}.
 
-Notar el uso de las mayúsculas y el punto al final de cada elemento.
+La formulación matemática de esta arquitectura híbrida es :
+\begin{equation}\label{f_hibrido}
+f_{hybrid} = f_{fisico} + f_{AI}(\mathbf{X})
+\end{equation}
+Donde el objetivo de entrenamiento (el \textit{target}) para $f_{AI}$ es el residual $R$, definido como :
+\begin{equation}
+R = Y_{real} - Y_{fisico}
+\end{equation}
+La literatura académica lo describe como una herramienta de predicción eficiente \citep{ref4, ref5}, donde el modelo $f_{fisico}$ aporta la consistencia y el $f_{AI}$ aporta la precisión, corrigiendo los sesgos propios del primero .
 
-Si se desea poner una lista numerada el formato es este:
+A continuación se analizan ambas partes de la ecuación \ref{f_hibrido}.
+
+\subsection{Componente físico ($f_{fisico}$)}
+\label{subsec:componente_fisico}
+
+El componente físico se desarrolla utilizando el motor de simulación \texttt{EPANET} \citep{ref9, ref10}. Este modelo se rige por leyes físicas claves que definen la complejidad del problema :
 
 \begin{enumerate}
-	\item Este es el primer elemento de la lista.
-	\item Este es el segundo elemento de la lista.
+    \item Pérdida de carga por fricción: se utiliza la ecuación de Hazen-Williams, una relación empírica que define la pérdida de carga ($H_f$) en una tubería. 
+    \begin{equation}
+    H_f = \frac{10.67 \cdot L}{C^{1.852} \cdot D^{4.87}} \cdot Q^{1.852}
+    \end{equation}
+    
+    \item Comportamiento de emisores (goteros): el caudal de salida ($q_e$) en un gotero se modela usando la ley de potencia, que relaciona el caudal con la presión ($p$) en el nodo. En el proyecto se utiliza un exponente $\gamma$ de 0.46, característico del equipamiento instalado, introduciendo otra no linealidad.
+    .
+    \begin{equation}
+    q_e = C_d \cdot p^{\gamma}
+    \end{equation}
 \end{enumerate}
 
-Notar el uso de las mayúsculas y el punto al final de cada elemento.
+Además, se emplea la simulación en modo Análisis Dirigido por Presión (PDA). A diferencia del Análisis Dirigido por Demanda (DDA), que asume que la demanda siempre se satisface, el PDA ajusta el caudal entregado si la presión en un nodo cae, ofreciendo una simulación mucho más realista para un sistema de riego solar donde la presión de la bomba varía constantemente.
 
-\subsection{Este es el título de una subsección}
-\label{subsec:ejemplo}
+\subsection{Componente corrector ($f_{AI}$)}
+\label{subsec:componente_corrector}
 
-Se recomienda no utilizar \textbf{texto en negritas} en ningún párrafo, ni tampoco texto \underline{subrayado}. En cambio sí se debe utilizar \textit{texto en itálicas} para palabras en un idioma extranjero, al menos la primera vez que aparecen en el texto. En el caso de palabras que estamos inventando se deben utilizar ``comillas'', así como también para citas textuales. Por ejemplo, un \textit{digital filter} es una especie de ``selector'' que permite separar ciertos componentes armónicos en particular.
+El componente de IA, $f_{AI}$, se implementa como un Perceptrón Multicapa (MLP).
 
-La escritura debe ser impersonal. Por ejemplo, no utilizar ``el diseño del firmware lo hice de acuerdo con tal principio'', sino ``el firmware fue diseñado utilizando tal principio''. 
+El vector de características $\mathbf{X}$ incluye estados operativos reales (como la presión y nivel freatico del aquifero) y decisiones de control (como el estado de las válvulas). También incluye la propia salida del modelo físico como una característica de entrada. Esto significa que el MLP aprende explícitamente en función de la predicción física, operando como un verdadero corrector de sesgos .
 
-El trabajo es algo que al momento de escribir la memoria se supone que ya está concluido, entonces todo lo que se refiera a hacer el trabajo se narra en tiempo pasado, porque es algo que ya ocurrió. Por ejemplo, "se diseñó el firmware empleando la técnica de test driven development".
+\section{Formulación del problema de optimización}
+\label{sec:formulacion_optimizacion}
 
-En cambio, la memoria es algo que está vivo cada vez que el lector la lee. Por eso transcurre siempre en tiempo presente, como por ejemplo:
+Una vez que se dispone de una función de aptitud $f_{hybrid}$ de alta fidelidad,es necesario definir formalmente el problema de optimización.
 
-``En el presente capítulo se da una visión global sobre las distintas pruebas realizadas y los resultados obtenidos. Se explica el modo en que fueron llevados a cabo los test unitarios y las pruebas del sistema''.
+\subsection{Formulación matemática formal}
+\label{subsec:formulacion_formal}
 
-Se recomienda no utilizar una sección de glosario sino colocar la descripción de las abreviaturas como parte del mismo cuerpo del texto. Por ejemplo, RTOS (\textit{Real Time Operating System}, Sistema Operativo de Tiempo Real) o en caso de considerarlo apropiado mediante notas a pie de página.
+El problema de optimización del despacho de riego consiste en encontrar el cronograma de apertura y cierre de válvulas que maximice un conjunto de objetivos, sujeto a las restricciones físicas de la red hidráulica y la disponibilidad de recursos. A continuación, se presenta una nomenclatura y formulación general del modelo .
 
-Si se desea indicar alguna página web utilizar el siguiente formato de referencias bibliográficas, dónde las referencias se detallan en la sección de bibliografía de la memoria, utilizado el formato establecido por IEEE en \citep{IEEE:citation}. Por ejemplo, ``el presente trabajo se basa en la plataforma EDU-CIAA-NXP \citep{CIAA}, la cual...''.
-
-\subsection{Figuras} 
-
-Al insertar figuras en la memoria se deben considerar determinadas pautas. Para empezar, usar siempre tipografía claramente legible. Luego, tener claro que \textbf{es incorrecto} escribir por ejemplo esto: ``El diseño elegido es un cuadrado, como se ve en la siguiente figura:''
-
-\begin{figure}[h]
+\begin{table}[h!]
 \centering
-\includegraphics[scale=.45]{./Figures/cuadradoAzul.png}
-\end{figure}
-
-La forma correcta de utilizar una figura es con referencias cruzadas, por ejemplo: ``Se eligió utilizar un cuadrado azul para el logo, como puede observarse en la figura \ref{fig:cuadradoAzul}''.
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=.45]{./Figures/cuadradoAzul.png}
-	\caption{Ilustración del cuadrado azul que se eligió para el diseño del logo.}
-	\label{fig:cuadradoAzul}
-\end{figure}
-
-El texto de las figuras debe estar siempre en español, excepto que se decida reproducir una figura original tomada de alguna referencia. En ese caso la referencia de la cual se tomó la figura debe ser indicada en el epígrafe de la figura e incluida como una nota al pie, como se ilustra en la figura \ref{fig:palabraIngles}.
-
-\begin{figure}[htpb]
-	\centering
-	\includegraphics[scale=.3]{./Figures/word.jpeg}
-	\caption{Imagen tomada de la página oficial del procesador\protect\footnotemark.}
-	\label{fig:palabraIngles}
-\end{figure}
-
-\footnotetext{Imagen tomada de \url{https://goo.gl/images/i7C70w}}
-
-La figura y el epígrafe deben conformar una unidad cuyo significado principal pueda ser comprendido por el lector sin necesidad de leer el cuerpo central de la memoria. Para eso es necesario que el epígrafe sea todo lo detallado que corresponda y si en la figura se utilizan abreviaturas entonces aclarar su significado en el epígrafe o en la misma figura.
-
-
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=.37]{./Figures/questionMark.png}
-	\caption{¿Por qué de pronto aparece esta figura?}
-	\label{fig:questionMark}
-\end{figure}
-
-Nunca colocar una figura en el documento antes de hacer la primera referencia a ella, como se ilustra con la figura \ref{fig:questionMark}, porque sino el lector no comprenderá por qué de pronto aparece la figura en el documento, lo que distraerá su atención.
-
-Otra posibilidad es utilizar el entorno \textit{subfigure} para incluir más de una figura, como se puede ver en la figura \ref{fig:three graphs}. Notar que se pueden referenciar también las figuras internas individualmente de esta manera: \ref{fig:1de3}, \ref{fig:2de3} y \ref{fig:3de3}.
- 
-\begin{figure}[!htpb]
-     \centering
-     \begin{subfigure}[b]{0.3\textwidth}
-         \centering
-         \includegraphics[width=.65\textwidth]{./Figures/questionMark}
-         \caption{Un caption.}
-         \label{fig:1de3}
-     \end{subfigure}
-     \hfill
-     \begin{subfigure}[b]{0.3\textwidth}
-         \centering
-         \includegraphics[width=.65\textwidth]{./Figures/questionMark}
-         \caption{Otro.}
-         \label{fig:2de3}
-     \end{subfigure}
-     \hfill
-     \begin{subfigure}[b]{0.3\textwidth}
-         \centering
-         \includegraphics[width=.65\textwidth]{./Figures/questionMark}
-         \caption{Y otro más.}
-         \label{fig:3de3}
-     \end{subfigure}
-        \caption{Tres gráficos simples.}
-        \label{fig:three graphs}
-\end{figure}
-
-El código para generar las imágenes se encuentra disponible para su reutilización en el archivo \file{Chapter2.tex}.
-
-\subsection{Tablas}
-
-Para las tablas utilizar el mismo formato que para las figuras, sólo que el epígrafe se debe colocar arriba de la tabla, como se ilustra en la tabla \ref{tab:peces}. Observar que sólo algunas filas van con líneas visibles y notar el uso de las negritas para los encabezados.  La referencia se logra utilizando el comando \verb|\ref{<label>}| donde label debe estar definida dentro del entorno de la tabla.
-
-\begin{verbatim}
-\begin{table}[h]
-	\centering
-	\caption[caption corto]{caption largo más descriptivo}
-	\begin{tabular}{l c c}    
-		\toprule
-		\textbf{Especie}     & \textbf{Tamaño} & \textbf{Valor}\\
-		\midrule
-		Amphiprion Ocellaris & 10 cm           & \$ 6.000 \\		
-		Hepatus Blue Tang    & 15 cm           & \$ 7.000 \\
-		Zebrasoma Xanthurus  & 12 cm           & \$ 6.800 \\
-		\bottomrule
-		\hline
-	\end{tabular}
-	\label{tab:peces}
-\end{table}
-\end{verbatim}
-
-
-\begin{table}[h]
-	\centering
-	\caption[caption corto]{caption largo más descriptivo.}
-	\begin{tabular}{l c c}    
-		\toprule
-		\textbf{Especie} 	 & \textbf{Tamaño} 		& \textbf{Valor}  \\
-		\midrule
-		Amphiprion Ocellaris & 10 cm 				& \$ 6.000 \\		
-		Hepatus Blue Tang	 & 15 cm				& \$ 7.000 \\
-		Zebrasoma Xanthurus	 & 12 cm				& \$ 6.800 \\
-		\bottomrule
-		\hline
-	\end{tabular}
-	\label{tab:peces}
+\caption{Nomenclatura del Modelo de Optimización. }
+\label{tab:nomenclatura}
+\begin{tabular}{l p{10cm}}
+\toprule
+\textbf{Símbolo} & \textbf{Definición} \\
+\midrule
+$\mathbf{V}$ & Matriz de decisiones de despacho (variable de decisión). \\
+$v_{i,t}$ & Variable binaria: 1 si la válvula $i$ está abierta en el tiempo $t$, 0 si está cerrada. \\
+$\mathcal{T}$ & Horizonte de planificación (ej. 24 horas, discretizado en $T$ intervalos). \\
+$\mathcal{I}$ & Conjunto de todas las válvulas (sectores de riego). \\
+$f_{hybrid}(\mathbf{V})$ & Función de aptitud (el gemelo digital) que mapea un plan $\mathbf{V}$ a sus consecuencias físicas. \\
+$Q_{entregado,i}(\mathbf{V})$ & Caudal total entregado al sector $i$ bajo el plan $\mathbf{V}$. \\
+$Q_{objetivo,i}$ & Caudal objetivo para el sector $i$. \\
+$P_{consumida,t}(\mathbf{V})$ & Potencia consumida por la bomba en el tiempo $t$ bajo el plan $\mathbf{V}$. \\
+$P_{disponible,t}$ & Potencia disponible pronosticada en el tiempo $t$ (ej. solar). \\
+$N_{recurso,t}(\mathbf{V})$ & Nivel del recurso (ej. freático) en el tiempo $t$ bajo el plan $\mathbf{V}$. \\
+$N_{min}$ & Nivel mínimo de seguridad del recurso. \\
+$w_u, w_t, w_a$ & Ponderaciones estratégicas para los objetivos de la función. \\
+\bottomrule
+\end{tabular}
 \end{table}
 
-En cada capítulo se debe reiniciar el número de conteo de las figuras y las tablas, por ejemplo, figura 2.1 o tabla 2.1, pero no se debe reiniciar el conteo en cada sección. Por suerte la plantilla se encarga de esto por nosotros.
+\subsubsection{Función objetivo ponderada}
 
-\subsection{Ecuaciones}
-\label{sec:Ecuaciones}
-
-Al insertar ecuaciones en la memoria dentro de un entorno \textit{equation}, éstas se numeran en forma automática  y se pueden referir al igual que como se hace con las figuras y tablas, por ejemplo ver la ecuación \ref{eq:metric}.
+Un enfoque común para problemas multiobjetivo es formular una función de aptitud unificada. Esta función es una suma ponderada que puede incluir objetivos agronómicos, de eficiencia y de sostenibilidad :
 
 \begin{equation}
-	\label{eq:metric}
-	ds^2 = c^2 dt^2 \left( \frac{d\sigma^2}{1-k\sigma^2} + \sigma^2\left[ d\theta^2 + \sin^2\theta d\phi^2 \right] \right)
+\max_{\mathbf{V}} \left( w_u \cdot \mathcal{U}(\mathbf{V}) - w_t \cdot \mathcal{T}_{bombeo}(\mathbf{V}) - w_a \cdot \mathcal{S}_{acuifero}(\mathbf{V}) \right)
 \end{equation}
-                                                        
-Para generar la ecuación \ref{eq:metric} se utilizó el siguiente código:
 
-\begin{verbatim}
-\begin{equation}
-	\label{eq:metric}
-	ds^2 = c^2 dt^2 \left( \frac{d\sigma^2}{1-k\sigma^2} + 
-	\sigma^2\left[ d\theta^2 + 
-	\sin^2\theta d\phi^2 \right] \right)
-\end{equation}
-\end{verbatim}
+Donde :
+\begin{itemize}
+    \item $\mathcal{U}(\mathbf{V})$: Una métrica de uniformidad (ej. minimizar el déficit cuadrático $\sum (Q_{objetivo,i} - Q_{entregado,i})^2$), que se busca maximizar.
+    \item $\mathcal{T}_{bombeo}(\mathbf{V})$: Una métrica del tiempo de bombeo (ej. $\sum v_{i,t}$), que se busca minimizar.
+    \item $\mathcal{S}_{acuifero}(\mathbf{V})$: Una métrica del estrés sobre el acuífero (ej. la extracción total de agua), que se busca minimizar.
+\end{itemize}
+
+\subsubsection{Restricciones del problema}
+
+La maximización está sujeta a un conjunto de restricciones físicas y operativas :
+
+\begin{enumerate}
+    \item Restricción de potencia: la potencia consumida por la bomba no puede exceder la potencia disponible en ningún momento.
+    \begin{equation}
+    P_{consumida,t}(f_{hybrid}(\mathbf{V})) \le P_{disponible,t} \quad \forall t \in \mathcal{T}
+    \end{equation}
+    
+    \item Restricción de sostenibilidad (ej. nivel freático): el nivel del recurso no debe caer por debajo del límite de seguridad.
+    \begin{equation}
+    N_{recurso,t}(f_{hybrid}(\mathbf{V})) \ge N_{min} \quad \forall t \in \mathcal{T}
+    \end{equation}
+    
+    \item Restricciones hidráulicas (implícitas): las leyes físicas de la red (Hazen-Williams, Ley de Potencia) están encapsuladas dentro de la evaluación de la función $f_{hybrid}$ .
+    
+    \item Variables de decisión binarias: las decisiones de control de válvulas son binarias.
+    \begin{equation}
+    v_{i,t} \in \{0, 1\} \quad \forall i \in \mathcal{I}, \forall t \in \mathcal{T}
+    \end{equation}
+\end{enumerate}
+
+
