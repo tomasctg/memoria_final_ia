@@ -13,13 +13,25 @@
 \contentsline {subsection}{\numberline {2.1.2}Componente corrector ($f_{AI}$)}{8}{subsection.2.1.2}%
 \contentsline {section}{\numberline {2.2}Formulación del problema de optimización}{9}{section.2.2}%
 \contentsline {subsection}{\numberline {2.2.1}Formulación matemática formal}{9}{subsection.2.2.1}%
-\contentsline {subsubsection}{Función objetivo ponderada}{9}{section*.8}%
-\contentsline {subsubsection}{Restricciones del problema}{10}{section*.9}%
-\contentsline {chapter}{\numberline {3}Diseño e implementación}{11}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Análisis del software}{11}{section.3.1}%
-\contentsline {chapter}{\numberline {4}Ensayos y resultados}{13}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Pruebas funcionales del hardware}{13}{section.4.1}%
-\contentsline {chapter}{\numberline {5}Conclusiones}{15}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Conclusiones generales }{15}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Próximos pasos}{15}{section.5.2}%
-\contentsline {chapter}{Bibliografía}{17}{appendix*.11}%
+\contentsline {subsubsection}{Función objetivo ponderada}{9}{section*.7}%
+\contentsline {subsubsection}{Restricciones del problema}{10}{section*.8}%
+\contentsline {section}{\numberline {2.3}Teoría de optimización: algoritmos genéticos}{10}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Anatomía de un algoritmo genético}{10}{subsection.2.3.1}%
+\contentsline {subsubsection}{Codificación del cromosoma (representación de la solución)}{10}{section*.9}%
+\contentsline {subsubsection}{Operadores de selección}{11}{section*.10}%
+\contentsline {subsubsection}{Operadores de cruce (\textit {crossover} / recombinación)}{11}{section*.12}%
+\contentsline {subsubsection}{Operadores de mutación (diversidad)}{12}{section*.14}%
+\contentsline {section}{\numberline {2.4}Manejo de restricciones: funciones de penalización}{12}{section.2.4}%
+\contentsline {chapter}{\numberline {3}Diseño e implementación}{15}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Arquitectura General del Software}{15}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Implementación del gemelo digital híbrido}{15}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Implementación del optimizador de despacho (GA)}{15}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Implementación de funciones de costo y penalizaciones}{15}{section.3.4}%
+\contentsline {chapter}{\numberline {4}Ensayos y resultados}{17}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Entorno y banco de pruebas}{17}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Pruebas del gemelo digital hibrido}{17}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Caso de estudio: simulación de despacho}{17}{section.4.3}%
+\contentsline {chapter}{\numberline {5}Conclusiones}{19}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Resultados obtenidos}{19}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Trabajo futuro}{19}{section.5.2}%
+\contentsline {chapter}{Bibliografía}{21}{appendix*.16}%

@@ -17,6 +17,179 @@
 \endgroup
 
 \datalist[entry]{none/global//global/global/global}
+  \entry{offgrid}{article}{}{}
+    \name{author}{4}{}{%
+      {{hash=SA}{%
+         family={Sagala},
+         familyi={S\bibinitperiod},
+         given={Albert},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=SP}{%
+         family={Siagian},
+         familyi={S\bibinitperiod},
+         given={Pandapotan},
+         giveni={P\bibinitperiod},
+      }}%
+      {{hash=TI}{%
+         family={Tambunan},
+         familyi={T\bibinitperiod},
+         given={Indra},
+         giveni={I\bibinitperiod},
+      }}%
+      {{hash=ST}{%
+         family={Simanjuntak},
+         familyi={S\bibinitperiod},
+         given={Tennov},
+         giveni={T\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{SA+1}
+    \strng{fullhash}{SASPTIST1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{title}{Implementation of Portable Off-Grid Solar Water Pump for
+  Irrigation Systems}
+    \verb{url}
+    \verb https://www.researchgate.net/publication/358920031_Implementation_of_
+    \verb Portable_Off-Grid_Solar_Water_Pump_for_Irrigation_Systems
+    \endverb
+    \field{journaltitle}{Jurnal Mantik}
+    \field{year}{2022}
+  \endentry
+
+  \entry{Mandalari2021_PistachioReview}{article}{}{}
+    \name{author}{7}{}{%
+      {{hash=MG}{%
+         family={Mandalari},
+         familyi={M\bibinitperiod},
+         given={Giuseppina},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=BD}{%
+         family={Barreca},
+         familyi={B\bibinitperiod},
+         given={Davide},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=GT}{%
+         family={Gervasi},
+         familyi={G\bibinitperiod},
+         given={Teresa},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=RMA}{%
+         family={Roussell},
+         familyi={R\bibinitperiod},
+         given={Michael\bibnamedelima A.},
+         giveni={M\bibinitperiod\bibinitdelim A\bibinitperiod},
+      }}%
+      {{hash=KB}{%
+         family={Klein},
+         familyi={K\bibinitperiod},
+         given={Bob},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=FMJ}{%
+         family={Feeney},
+         familyi={F\bibinitperiod},
+         given={Mary\bibnamedelima Jo},
+         giveni={M\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+      {{hash=CA}{%
+         family={Carughi},
+         familyi={C\bibinitperiod},
+         given={Arianna},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{MG+1}
+    \strng{fullhash}{MGBDGTRMAKBFMJCA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \verb{doi}
+    \verb 10.3390/plants11010018
+    \endverb
+    \field{title}{Pistachio Nuts (Pistacia vera L.): Production, Nutrients,
+  Bioactives and Novel Health Effects}
+    \verb{url}
+    \verb https://doi.org/10.3390/plants11010018
+    \endverb
+    \field{journaltitle}{Plants}
+    \field{year}{2021}
+  \endentry
+
+  \entry{Nunez2024_Phenology_Spain}{article}{}{}
+    \name{author}{4}{}{%
+      {{hash=NL}{%
+         family={N{\'u}{\~n}ez},
+         familyi={N\bibinitperiod},
+         given={Lidia},
+         giveni={L\bibinitperiod},
+      }}%
+      {{hash=MH}{%
+         family={Mart{\'\i}n},
+         familyi={M\bibinitperiod},
+         given={Hugo},
+         giveni={H\bibinitperiod},
+      }}%
+      {{hash=MAJM}{%
+         family={Mir{\'a}s-Avalos},
+         familyi={M\bibinithyphendelim A\bibinitperiod},
+         given={Jos{\'e}\bibnamedelima Manuel},
+         giveni={J\bibinitperiod\bibinitdelim M\bibinitperiod},
+      }}%
+      {{hash=AS}{%
+         family={{\'A}lvarez},
+         familyi={{\'A}\bibinitperiod},
+         given={Sara},
+         giveni={S\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{NL+1}
+    \strng{fullhash}{NLMHMAJMAS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \verb{doi}
+    \verb 10.3390/horticulturae10121235
+    \endverb
+    \field{title}{Pistachio Phenology and Yield in a Cold-Winter Region of
+  Spain: The Status of the Cultivation and Performance of Three Cultivars}
+    \verb{url}
+    \verb https://doi.org/10.3390/horticulturae10121235
+    \endverb
+    \field{journaltitle}{Horticulturae}
+    \field{year}{2024}
+  \endentry
+
+  \entry{Kanber2003_GrowthYield}{incollection}{}{}
+    \name{author}{1}{}{%
+      {{hash=KR}{%
+         family={Kanber},
+         familyi={K\bibinitperiod},
+         given={R.},
+         giveni={R\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{2}{%
+      {CIHEAM / Options M\'editerran\'eennes, Series B, Studies}%
+      {Research}%
+    }
+    \strng{namehash}{KR1}
+    \strng{fullhash}{KR1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{booktitle}{Water and nutrient management for slope agriculture and
+  horticulture}
+    \field{note}{CIHEAM - Mediterranean Agronomic Institute (proceedings /
+  technical paper). Disponible en: https://om.ciheam.org/ (consulta la edición
+  original para la paginaci\'on exacta)}
+    \field{series}{Options M\'editerran\'eennes}
+    \field{title}{Growth, yield and periodicity of pistachio under different
+  irrigation and fertilization regimes}
+    \field{year}{2003}
+  \endentry
+
   \entry{IoTReviewMDPI}{misc}{}{}
     \name{author}{1}{}{%
       {{hash=M}{%
@@ -33,6 +206,59 @@
     \field{title}{Internet of Things-Based Automated Solutions Utilizing
   Machine Learning for Smart and Real-Time Irrigation Management: A Review}
     \field{year}{2024}
+  \endentry
+
+  \entry{Goldberg1989_GA}{book}{}{}
+    \name{author}{1}{}{%
+      {{hash=GDE}{%
+         family={Goldberg},
+         familyi={G\bibinitperiod},
+         given={David\bibnamedelima E.},
+         giveni={D\bibinitperiod\bibinitdelim E\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Addison-Wesley}%
+    }
+    \strng{namehash}{GDE1}
+    \strng{fullhash}{GDE1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{isbn}{978-0201157673}
+    \field{title}{Genetic Algorithms in Search, Optimization, and Machine
+  Learning}
+    \list{location}{1}{%
+      {Reading, MA}%
+    }
+    \field{year}{1989}
+  \endentry
+
+  \entry{Rossman2000_EPANET2}{manual}{}{}
+    \name{author}{1}{}{%
+      {{hash=RLA}{%
+         family={Rossman},
+         familyi={R\bibinitperiod},
+         given={Lewis\bibnamedelima A.},
+         giveni={L\bibinitperiod\bibinitdelim A\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {U.S. Environmental Protection Agency (EPA)}%
+    }
+    \strng{namehash}{RLA1}
+    \strng{fullhash}{RLA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{note}{Water Supply and Water Resources Division, National Risk
+  Management Research Laboratory}
+    \field{title}{EPANET 2: Users Manual}
+    \verb{url}
+    \verb https://www.epa.gov/water-research/epanet
+    \endverb
+    \list{location}{1}{%
+      {Cincinnati, OH, USA}%
+    }
+    \field{year}{2000}
   \endentry
 
   \entry{DITEC-WNTR}{misc}{}{}
@@ -276,6 +502,31 @@
     \field{year}{2011}
   \endentry
 
+  \entry{Floudas1995_MINLP}{book}{}{}
+    \name{author}{1}{}{%
+      {{hash=FCA}{%
+         family={Floudas},
+         familyi={F\bibinitperiod},
+         given={Christodoulos\bibnamedelima A.},
+         giveni={C\bibinitperiod\bibinitdelim A\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Oxford University Press}%
+    }
+    \strng{namehash}{FCA1}
+    \strng{fullhash}{FCA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{isbn}{9780195095295}
+    \field{title}{Nonlinear and Mixed-Integer Optimization: Fundamentals and
+  Applications}
+    \list{location}{1}{%
+      {New York, NY}%
+    }
+    \field{year}{1995}
+  \endentry
+
   \entry{GAschedulingSussex}{report}{}{}
     \name{author}{1}{}{%
       {{hash=HP}{%
@@ -393,6 +644,31 @@
     \field{year}{2023}
   \endentry
 
+  \entry{USEPA_WNTR_2024}{manual}{}{}
+    \name{author}{1}{}{%
+      {{hash=U}{%
+         family={{U.S. Environmental Protection Agency}},
+         familyi={U\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {U.S. Environmental Protection Agency}%
+    }
+    \strng{namehash}{U1}
+    \strng{fullhash}{U1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{note}{Accessed: YYYY-MM-DD}
+    \field{title}{Water Network Tool for Resilience (WNTR) Documentation}
+    \verb{url}
+    \verb https://usepa.github.io/WNTR/
+    \endverb
+    \list{location}{1}{%
+      {Washington, D.C.}%
+    }
+    \field{year}{2024}
+  \endentry
+
   \entry{HybridModelsKaggle}{misc}{}{}
     \name{author}{1}{}{%
       {{hash=HR}{%
@@ -481,24 +757,6 @@
     \endverb
     \field{journaltitle}{TheSAI}
     \field{year}{2012}
-  \endentry
-
-  \entry{ref1}{misc}{}{}
-    \name{author}{1}{}{%
-      {{hash=A}{%
-         family={{Autor Anónimo}},
-         familyi={A\bibinitperiod},
-      }}%
-    }
-    \strng{namehash}{A1}
-    \strng{fullhash}{A1}
-    \field{labelnamesource}{author}
-    \field{labeltitlesource}{title}
-    \field{note}{Documento interno del proyecto}
-    \field{title}{Un Marco para la Estimación de Estado Completo en Redes
-  Hidráulicas mediante Modelado Híbrido de Residuales y Solucionadores de
-  Problemas Inversos}
-    \field{year}{2025}
   \endentry
 
   \entry{ref9}{article}{}{}
@@ -680,122 +938,6 @@
     \field{year}{2024}
   \endentry
 
-  \entry{ref11}{article}{}{}
-    \name{author}{1}{}{%
-      {{hash=V}{%
-         family={Various},
-         familyi={V\bibinitperiod},
-      }}%
-    }
-    \strng{namehash}{V1}
-    \strng{fullhash}{V1}
-    \field{labelnamesource}{author}
-    \field{labeltitlesource}{title}
-    \field{title}{Energy Optimization of Water Supply System Scheduling: Novel
-  MINLP Model and Efficient Global Optimization Algorithm}
-    \verb{url}
-    \verb https://www.researchgate.net/publication/303500855_Energy_Optimizatio
-    \verb n_of_Water_Supply_System_Scheduling_Novel_MINLP_Model_and_Efficient_G
-    \verb lobal_Optimization_Algorithm
-    \endverb
-    \field{journaltitle}{ResearchGate}
-    \field{year}{2016}
-  \endentry
-
-  \entry{ref2}{misc}{}{}
-    \name{author}{1}{}{%
-      {{hash=a}{%
-         family={arXiv},
-         familyi={a\bibinitperiod},
-      }}%
-    }
-    \strng{namehash}{a1}
-    \strng{fullhash}{a1}
-    \field{labelnamesource}{author}
-    \field{labeltitlesource}{title}
-    \field{howpublished}{\url{https://arxiv.org/abs/1810.06191}}
-    \field{note}{Accessed: October 15, 2025}
-    \field{title}{Inverse Problems and Data Assimilation}
-    \field{year}{2018}
-  \endentry
-
-  \entry{ref12}{article}{}{}
-    \name{author}{1}{}{%
-      {{hash=V}{%
-         family={Various},
-         familyi={V\bibinitperiod},
-      }}%
-    }
-    \strng{namehash}{V1}
-    \strng{fullhash}{V1}
-    \field{labelnamesource}{author}
-    \field{labeltitlesource}{title}
-    \field{title}{Efficient Two-Phase Algorithm to Solve Nonconvex MINLP Model
-  of Pump Scheduling Problem}
-    \verb{url}
-    \verb https://ascelibrary.org/doi/abs/10.1061/(ASCE)WR.1943-5452.0001387
-    \endverb
-    \field{journaltitle}{ASCE Library}
-    \field{year}{2021}
-  \endentry
-
-  \entry{ref13}{article}{}{}
-    \name{author}{2}{}{%
-      {{hash=GB}{%
-         family={Grové},
-         familyi={G\bibinitperiod},
-         given={B.},
-         giveni={B\bibinitperiod},
-      }}%
-      {{hash=DPMC}{%
-         family={Du\bibnamedelima Plessis},
-         familyi={D\bibinitperiod\bibinitdelim P\bibinitperiod},
-         given={M.\bibnamedelima C.},
-         giveni={M\bibinitperiod\bibinitdelim C\bibinitperiod},
-      }}%
-    }
-    \strng{namehash}{GBDPMC1}
-    \strng{fullhash}{GBDPMC1}
-    \field{labelnamesource}{author}
-    \field{labeltitlesource}{title}
-    \field{number}{1}
-    \field{title}{Optimising intra-seasonal irrigation water allocation: a
-  comparison of mixed integer nonlinear programming and differential evolution}
-    \verb{url}
-    \verb https://www.watersa.net/article/view/6674
-    \endverb
-    \field{volume}{45}
-    \field{journaltitle}{Water SA}
-    \field{year}{2019}
-  \endentry
-
-  \entry{ref14}{article}{}{}
-    \name{author}{1}{}{%
-      {{hash=V}{%
-         family={Various},
-         familyi={V\bibinitperiod},
-      }}%
-    }
-    \strng{namehash}{V1}
-    \strng{fullhash}{V1}
-    \field{labelnamesource}{author}
-    \field{labeltitlesource}{title}
-    \field{title}{Recent Advances in Optimal Design of Scaled Micro-Irrigation
-  Pipeline Network Systems: A Comprehensive Review}
-    \verb{url}
-    \verb https://www.mdpi.com/2073-4395/13/12/2966
-    \endverb
-    \field{journaltitle}{MDPI}
-    \field{year}{2023}
-  \endentry
-
-  \entry{ref3}{misc}{}{}
-    \field{labeltitlesource}{title}
-  \field{howpublished}{\url{https://www.weap21.org/webhelp/mass_balance_constraints.htm}}
-    \field{note}{Accessed: October 15, 2025}
-    \field{title}{Mass Balance Constraints - WEAP}
-  \endentry
-
   \entry{ref15}{report}{}{}
     \name{author}{1}{}{%
       {{hash=V}{%
@@ -966,25 +1108,6 @@
     \field{year}{2024}
   \endentry
 
-  \entry{ref23}{article}{}{}
-    \name{author}{1}{}{%
-      {{hash=V}{%
-         family={Various},
-         familyi={V\bibinitperiod},
-      }}%
-    }
-    \strng{namehash}{V1}
-    \strng{fullhash}{V1}
-    \field{labelnamesource}{author}
-    \field{labeltitlesource}{title}
-    \field{title}{A Genetic Algorithm for Open Shop Scheduling}
-    \verb{url}
-    \verb https://www.scirp.org/journal/paperinformation?paperid=67660
-    \endverb
-    \field{journaltitle}{SCIRP}
-    \field{year}{2016}
-  \endentry
-
   \entry{ref24}{misc}{}{}
     \name{author}{1}{}{%
       {{hash=S}{%
@@ -1000,6 +1123,78 @@
     \field{title}{Genetic algorithms crossover and mutation operators for
   paths}
     \field{year}{2012}
+  \endentry
+
+  \entry{ref2}{misc}{}{}
+    \name{author}{1}{}{%
+      {{hash=a}{%
+         family={arXiv},
+         familyi={a\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{a1}
+    \strng{fullhash}{a1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{howpublished}{\url{https://arxiv.org/abs/1810.06191}}
+    \field{note}{Accessed: October 15, 2025}
+    \field{title}{Inverse Problems and Data Assimilation}
+    \field{year}{2018}
+  \endentry
+
+  \entry{ref13}{article}{}{}
+    \name{author}{2}{}{%
+      {{hash=GB}{%
+         family={Grové},
+         familyi={G\bibinitperiod},
+         given={B.},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=DPMC}{%
+         family={Du\bibnamedelima Plessis},
+         familyi={D\bibinitperiod\bibinitdelim P\bibinitperiod},
+         given={M.\bibnamedelima C.},
+         giveni={M\bibinitperiod\bibinitdelim C\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{GBDPMC1}
+    \strng{fullhash}{GBDPMC1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{number}{1}
+    \field{title}{Optimising intra-seasonal irrigation water allocation: a
+  comparison of mixed integer nonlinear programming and differential evolution}
+    \verb{url}
+    \verb https://www.watersa.net/article/view/6674
+    \endverb
+    \field{volume}{45}
+    \field{journaltitle}{Water SA}
+    \field{year}{2019}
+  \endentry
+
+  \entry{ref3}{misc}{}{}
+    \field{labeltitlesource}{title}
+  \field{howpublished}{\url{https://www.weap21.org/webhelp/mass_balance_constraints.htm}}
+    \field{note}{Accessed: October 15, 2025}
+    \field{title}{Mass Balance Constraints - WEAP}
+  \endentry
+
+  \entry{ref1}{misc}{}{}
+    \name{author}{1}{}{%
+      {{hash=A}{%
+         family={{Autor Anónimo}},
+         familyi={A\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{A1}
+    \strng{fullhash}{A1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{note}{Documento interno del proyecto}
+    \field{title}{Un Marco para la Estimación de Estado Completo en Redes
+  Hidráulicas mediante Modelado Híbrido de Residuales y Solucionadores de
+  Problemas Inversos}
+    \field{year}{2025}
   \endentry
 \enddatalist
 \endinput
