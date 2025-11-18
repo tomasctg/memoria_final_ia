@@ -41,10 +41,58 @@ Todos los capítulos deben comenzar con un breve párrafo introductorio que indi
 }
 
 
-%----------------------------------------------------------------------------------------
-%	SECTION 1
-%----------------------------------------------------------------------------------------
+
 \section{Arquitectura General del Software}
+\label{sec:arquitectura_general}
+
+El diseño del sistema de riego se basa en una arquitectura de cuatro capas: la capa física, la de control y adquisición, la de gestión y optimización, y la de presentación (ver figura \ref{fig:diagrama_capas}). Este trabajo se enfoca exclusivamente en la capa de gestión y optimización, que es responsable de transformar los datos históricos y de telemetría en un plan de despacho de riego óptimo.
+
+El software se implementó bajo una arquitectura de microservicios \citep{Newman2015_Microservices}. Esta arquitectura garantiza la separación de responsabilidades y la escalabilidad horizontal de los dos componentes centrales: el entrenamiento continuo del modelo predictivo y su consumo operativo.
+
+El diseño se basa en dos subsistemas, encapsulados en contenedores \textit{Docker} para asegurar un entorno de ejecución aislado y consistente: el subsistema de entrenamiento y ciclo de vida (MLOps) y el subsistema de optimización y servicio. La vinculación entre ellos se establece a través de un registro central de modelos, lo que permite al motor de decisión consumir siempre la versión más precisa del gemelo digital híbrido, mientras el \textit{pipeline} de MLOps opera de forma asíncrona.
+
+\begin{figure}[ht]
+    \centering
+	\includegraphics[width=\textwidth]{Figures/despacho_v1.pdf}
+    \caption{Diagrama de capas del sistema de riego, donde el foco del proyecto es la capa de gestión y optimización.}
+    \label{fig:diagrama_capas}
+\end{figure}
+
+
+\subsubsection{Subsistema de entrenamiento y ciclo de vida (MLOps)}
+\label{sec:subsistema_mlops}
+
+Este subsistema tiene como objetivo principal la sostenibilidad de la precisión del modelo predictivo. Mantiene el gemelo digital híbrido actualizado al ejecutar un ciclo de vida automatizado que mitiga el (\textit{model drift}) \citep{Schlachter2020_HybridModel}. Este flujo de trabajo, fundamental para un entorno de producción, está orquestado por \textit{pipelines} de \textit{Apache Airflow} \citep{AirflowApache_Orchestration}.
+
+La arquitectura comprende un \textit{stack} de infraestructura para el manejo de los artefactos y la trazabilidad de los experimentos:
+\begin{itemize}
+    \item Data Lake (\textit{MinIO}): repositorio central de objetos que almacena los datos de telemetría históricos y los \textit{datasets} limpios, actuando como la fuente única de verdad para el entrenamiento.
+    \item Registro de Artefactos (\textit{MLflow}): administra el ciclo de vida completo del modelo \citep{MLflowDatabricks}. Registra los hiperparámetros, métricas y los artefactos binarios (el modelo y los transformadores de características) que son promovidos a producción para su consumo por el servicio de inferencia.
+    \item Orquestación (\textit{PostgreSQL/Airflow}): la base de datos \textit{PostgreSQL} gestiona los metadatos y el estado de los \textit{pipelines} de \textit{Airflow}, asegurando la fiabilidad y reintentos del proceso de \textit{Integración y Despliegue Continuo} (CI/CD) \citep{Holo2020_MLOps}.
+\end{itemize}
+
+El \textit{pipeline} de entrenamiento se estructura en una secuencia de módulos lógicos de procesamiento de datos:
+
+\begin{enumerate}
+    \item Módulo de ingesta y consolidación: responsable de la lectura y unificación de los datos de telemetría histórica del campo desde el \textit{Data Lake}.
+    \item Módulo de limpieza: filtra los registros inconsistentes y asegura la calidad del \textit{dataset}.
+    \item Módulo de ingeniería de características: genera las variables sintéticas necesarias para el modelo de corrección de residuales, como el número de actuadores activos.
+    \item Módulo de entrenamiento: ejecuta el entrenamiento. Si el nuevo modelo supera los umbrales de desempeño, es promovido al alias de \textit{"production"} en el registro de modelos, completando el ciclo de integración y despliegue continuo (CI/CD) \citep{Holo2020_MLOps}.
+\end{enumerate}
+
+\subsubsection{Subsistema de optimización y servicio}
+\label{sec:subsistema_optimizacion}
+
+Este subsistema constituye el corazón operativo del sistema, implementando el motor de decisión. Se diferencian dos partes importantes.
+\begin{enumerate}
+    \item Capa de servicio de inferencia (\textit{Snapshot API}):
+    El diseño de arquitectura resuelve el desafío de rendimiento mediante un microservicio RESTful asíncrono implementado con \textit{FastAPI}. Al iniciar, carga el gemelo digital híbrido, compuesto por el modelo físico \textit{WNTR} \citep{WNTRShaw2018} y el modelo de IA de corrección de residuales, directamente en memoria. Esto transforma el complejo proceso de simulación en una llamada de servicio de baja latencia.
+    La \textit{API} está diseñada para ser escalable horizontalmente, utilizando \textit{NGINX} como balanceador de carga. Esto permite al optimizador enviar de manera concurrente miles de peticiones de simulación por segundo, evaluando un gran número de soluciones candidatas en paralelo.
+
+    \item Motor de optimización (\textit{algoritmo genético}):
+    El motor implementa el AG. Su conexión con la \textit{Snapshot API} se da a través de una interfaz que distribuye la evaluación de la función de aptitud de cada individuo (plan de riego) a través de las instancias del microservicio de inferencia.
+\end{enumerate}
+
 
 \section{Implementación del gemelo digital híbrido}
 

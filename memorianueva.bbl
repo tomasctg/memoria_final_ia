@@ -1,5 +1,5 @@
 % $ biblatex auxiliary file $
-% $ biblatex bbl format version 3.3 $
+% $ biblatex bbl format version 3.2 $
 % Do not modify the above lines!
 %
 % This is an auxiliary file used by the 'biblatex' package.
@@ -16,8 +16,8 @@
   {}
 \endgroup
 
-\datalist[entry]{none/global//global/global/global}
-  \entry{offgrid}{article}{}{}
+\datalist[entry]{none/global//global/global}
+  \entry{offgrid}{article}{}
     \name{author}{4}{}{%
       {{hash=SA}{%
          family={Sagala},
@@ -58,7 +58,7 @@
     \field{year}{2022}
   \endentry
 
-  \entry{Mandalari2021_PistachioReview}{article}{}{}
+  \entry{Mandalari2021_PistachioReview}{article}{}
     \name{author}{7}{}{%
       {{hash=MG}{%
          family={Mandalari},
@@ -119,7 +119,7 @@
     \field{year}{2021}
   \endentry
 
-  \entry{Nunez2024_Phenology_Spain}{article}{}{}
+  \entry{Nunez2024_Phenology_Spain}{article}{}
     \name{author}{4}{}{%
       {{hash=NL}{%
          family={N{\'u}{\~n}ez},
@@ -162,7 +162,7 @@
     \field{year}{2024}
   \endentry
 
-  \entry{Kanber2003_GrowthYield}{incollection}{}{}
+  \entry{Kanber2003_GrowthYield}{incollection}{}
     \name{author}{1}{}{%
       {{hash=KR}{%
          family={Kanber},
@@ -190,7 +190,7 @@
     \field{year}{2003}
   \endentry
 
-  \entry{IoTReviewMDPI}{misc}{}{}
+  \entry{IoTReviewMDPI}{misc}{}
     \name{author}{1}{}{%
       {{hash=M}{%
          family={MDPI},
@@ -208,7 +208,7 @@
     \field{year}{2024}
   \endentry
 
-  \entry{Goldberg1989_GA}{book}{}{}
+  \entry{Goldberg1989_GA}{book}{}
     \name{author}{1}{}{%
       {{hash=GDE}{%
          family={Goldberg},
@@ -233,7 +233,7 @@
     \field{year}{1989}
   \endentry
 
-  \entry{Rossman2000_EPANET2}{manual}{}{}
+  \entry{Rossman2000_EPANET2}{manual}{}
     \name{author}{1}{}{%
       {{hash=RLA}{%
          family={Rossman},
@@ -261,7 +261,7 @@
     \field{year}{2000}
   \endentry
 
-  \entry{DITEC-WNTR}{misc}{}{}
+  \entry{DITEC-WNTR}{misc}{}
     \name{author}{1}{}{%
       {{hash=TH}{%
          family={Truong},
@@ -284,7 +284,7 @@
     \field{year}{2025}
   \endentry
 
-  \entry{WNTR-Python}{inproceedings}{}{}
+  \entry{WNTR-Python}{inproceedings}{}
     \name{author}{1}{}{%
       {{hash=eaMET}{%
          prefix={et},
@@ -310,7 +310,7 @@
     \field{year}{2017}
   \endentry
 
-  \entry{HybridPatternsArxiv}{misc}{}{}
+  \entry{HybridPatternsArxiv}{misc}{}
     \name{author}{1}{}{%
       {{hash=MRBRSK}{%
          family={Maja\bibnamedelima Rudolph},
@@ -334,7 +334,7 @@
     \field{year}{2024}
   \endentry
 
-  \entry{CalibrationModelANN}{inproceedings}{}{}
+  \entry{CalibrationModelANN}{inproceedings}{}
     \name{author}{4}{}{%
       {{hash=dOGPG}{%
          prefix={de},
@@ -384,7 +384,7 @@
     \field{year}{2017}
   \endentry
 
-  \entry{HybridReviewTandF}{article}{}{}
+  \entry{HybridReviewTandF}{article}{}
     \name{author}{6}{}{%
       {{hash=LJ}{%
          family={Li},
@@ -434,7 +434,7 @@
     \field{year}{2024}
   \endentry
 
-  \entry{ReviewPhysicsInformed}{article}{}{}
+  \entry{ReviewPhysicsInformed}{article}{}
     \name{author}{1}{}{%
       {{hash=eaMHT}{%
          prefix={et},
@@ -460,7 +460,7 @@
     \field{year}{2024}
   \endentry
 
-  \entry{GreyBoxWikipedia}{misc}{}{}
+  \entry{GreyBoxWikipedia}{misc}{}
     \name{author}{1}{}{%
       {{hash=cW}{%
          family={contributors},
@@ -479,7 +479,7 @@
     \field{year}{2024}
   \endentry
 
-  \entry{GreyBoxHydrology}{thesis}{}{}
+  \entry{GreyBoxHydrology}{thesis}{}
     \name{author}{1}{}{%
       {{hash=MH}{%
          family={Madsen},
@@ -502,7 +502,7 @@
     \field{year}{2011}
   \endentry
 
-  \entry{Floudas1995_MINLP}{book}{}{}
+  \entry{Floudas1995_MINLP}{book}{}
     \name{author}{1}{}{%
       {{hash=FCA}{%
          family={Floudas},
@@ -527,7 +527,7 @@
     \field{year}{1995}
   \endentry
 
-  \entry{GAschedulingSussex}{report}{}{}
+  \entry{GAschedulingSussex}{report}{}
     \name{author}{1}{}{%
       {{hash=HP}{%
          family={Husbands},
@@ -550,7 +550,7 @@
     \field{year}{1996}
   \endentry
 
-  \entry{GAschedulingSurvey}{report}{}{}
+  \entry{GAschedulingSurvey}{report}{}
     \name{author}{2}{}{%
       {{hash=C�}{%
          family={Corominas},
@@ -581,7 +581,7 @@
     \field{year}{2000}
   \endentry
 
-  \entry{PerformanceMetaheuristics}{article}{}{}
+  \entry{PerformanceMetaheuristics}{article}{}
     \name{author}{2}{}{%
       {{hash=JASMM}{%
          family={Jaber},
@@ -612,7 +612,7 @@
     \field{year}{2021}
   \endentry
 
-  \entry{ComparativeMetaheuristics}{article}{}{}
+  \entry{ComparativeMetaheuristics}{article}{}
     \name{author}{2}{}{%
       {{hash=KMBM}{%
          family={Kamar},
@@ -644,7 +644,7 @@
     \field{year}{2023}
   \endentry
 
-  \entry{USEPA_WNTR_2024}{manual}{}{}
+  \entry{USEPA_WNTR_2024}{manual}{}
     \name{author}{1}{}{%
       {{hash=U}{%
          family={{U.S. Environmental Protection Agency}},
@@ -669,7 +669,7 @@
     \field{year}{2024}
   \endentry
 
-  \entry{HybridModelsKaggle}{misc}{}{}
+  \entry{HybridModelsKaggle}{misc}{}
     \name{author}{1}{}{%
       {{hash=HR}{%
          family={Holbrook},
@@ -691,7 +691,7 @@
     \field{year}{2025}
   \endentry
 
-  \entry{HybridSeriesArxiv}{misc}{}{}
+  \entry{HybridSeriesArxiv}{misc}{}
     \name{author}{1}{}{%
       {{hash=eaXW}{%
          prefix={et},
@@ -716,7 +716,7 @@
     \field{year}{2021}
   \endentry
 
-  \entry{ref7}{misc}{}{}
+  \entry{ref7}{misc}{}
     \name{author}{1}{}{%
       {{hash=BW}{%
          family={Braham},
@@ -737,7 +737,7 @@
     \field{year}{2025}
   \endentry
 
-  \entry{ref8}{article}{}{}
+  \entry{ref8}{article}{}
     \name{author}{1}{}{%
       {{hash=V}{%
          family={Various},
@@ -759,7 +759,7 @@
     \field{year}{2012}
   \endentry
 
-  \entry{ref9}{article}{}{}
+  \entry{ref9}{article}{}
     \name{author}{5}{}{%
       {{hash=TY}{%
          family={Tao},
@@ -808,7 +808,7 @@
     \field{year}{2022}
   \endentry
 
-  \entry{ref10}{article}{}{}
+  \entry{ref10}{article}{}
     \name{author}{1}{}{%
       {{hash=V}{%
          family={Various},
@@ -830,7 +830,7 @@
     \field{year}{2022}
   \endentry
 
-  \entry{ref4}{article}{}{}
+  \entry{ref4}{article}{}
     \name{author}{7}{}{%
       {{hash=RM}{%
          family={R{\"u}gner},
@@ -890,7 +890,7 @@
     \field{year}{2021}
   \endentry
 
-  \entry{ref5}{article}{}{}
+  \entry{ref5}{article}{}
     \name{author}{1}{}{%
       {{hash=vdMSEWTMH}{%
          prefix={van\bibnamedelima der},
@@ -918,7 +918,7 @@
     \field{year}{2021}
   \endentry
 
-  \entry{ref6}{article}{}{}
+  \entry{ref6}{article}{}
     \name{author}{1}{}{%
       {{hash=V}{%
          family={Various},
@@ -938,7 +938,7 @@
     \field{year}{2024}
   \endentry
 
-  \entry{ref15}{report}{}{}
+  \entry{ref15}{report}{}
     \name{author}{1}{}{%
       {{hash=V}{%
          family={Various},
@@ -960,7 +960,7 @@
     \field{year}{2005}
   \endentry
 
-  \entry{ref16}{article}{}{}
+  \entry{ref16}{article}{}
     \name{author}{1}{}{%
       {{hash=V}{%
          family={Various},
@@ -984,7 +984,7 @@
     \field{year}{2019}
   \endentry
 
-  \entry{ref17}{article}{}{}
+  \entry{ref17}{article}{}
     \name{author}{1}{}{%
       {{hash=V}{%
          family={Various},
@@ -1004,7 +1004,7 @@
     \field{year}{2021}
   \endentry
 
-  \entry{ref18}{article}{}{}
+  \entry{ref18}{article}{}
     \name{author}{1}{}{%
       {{hash=V}{%
          family={Various},
@@ -1024,7 +1024,7 @@
     \field{year}{2025}
   \endentry
 
-  \entry{ref19}{article}{}{}
+  \entry{ref19}{article}{}
     \name{author}{1}{}{%
       {{hash=V}{%
          family={Various},
@@ -1046,7 +1046,7 @@
     \field{year}{2022}
   \endentry
 
-  \entry{ref20}{article}{}{}
+  \entry{ref20}{article}{}
     \name{author}{1}{}{%
       {{hash=V}{%
          family={Various},
@@ -1068,7 +1068,7 @@
     \field{year}{2022}
   \endentry
 
-  \entry{ref21}{article}{}{}
+  \entry{ref21}{article}{}
     \name{author}{1}{}{%
       {{hash=V}{%
          family={Various},
@@ -1087,7 +1087,7 @@
     \field{journaltitle}{CORE}
   \endentry
 
-  \entry{ref22}{article}{}{}
+  \entry{ref22}{article}{}
     \name{author}{1}{}{%
       {{hash=V}{%
          family={Various},
@@ -1108,7 +1108,7 @@
     \field{year}{2024}
   \endentry
 
-  \entry{ref24}{misc}{}{}
+  \entry{ref24}{misc}{}
     \name{author}{1}{}{%
       {{hash=S}{%
          family={{Stack Overflow Community}},
@@ -1125,7 +1125,7 @@
     \field{year}{2012}
   \endentry
 
-  \entry{ref2}{misc}{}{}
+  \entry{ref2}{misc}{}
     \name{author}{1}{}{%
       {{hash=a}{%
          family={arXiv},
@@ -1142,7 +1142,7 @@
     \field{year}{2018}
   \endentry
 
-  \entry{ref13}{article}{}{}
+  \entry{ref13}{article}{}
     \name{author}{2}{}{%
       {{hash=GB}{%
          family={Grové},
@@ -1172,14 +1172,14 @@
     \field{year}{2019}
   \endentry
 
-  \entry{ref3}{misc}{}{}
+  \entry{ref3}{misc}{}
     \field{labeltitlesource}{title}
   \field{howpublished}{\url{https://www.weap21.org/webhelp/mass_balance_constraints.htm}}
     \field{note}{Accessed: October 15, 2025}
     \field{title}{Mass Balance Constraints - WEAP}
   \endentry
 
-  \entry{ref1}{misc}{}{}
+  \entry{ref1}{misc}{}
     \name{author}{1}{}{%
       {{hash=A}{%
          family={{Autor Anónimo}},
@@ -1195,6 +1195,236 @@
   Hidráulicas mediante Modelado Híbrido de Residuales y Solucionadores de
   Problemas Inversos}
     \field{year}{2025}
+  \endentry
+
+  \entry{Newman2015_Microservices}{book}{}
+    \name{author}{1}{}{%
+      {{hash=NS}{%
+         family={Newman},
+         familyi={N\bibinitperiod},
+         given={Sam},
+         giveni={S\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {O'Reilly Media}%
+    }
+    \strng{namehash}{NS1}
+    \strng{fullhash}{NS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{isbn}{9781491950357}
+    \field{title}{Building Microservices: Designing Fine-Grained Systems}
+    \field{year}{2015}
+  \endentry
+
+  \entry{Schlachter2020_HybridModel}{article}{}
+    \name{author}{2}{}{%
+      {{hash=ST}{%
+         family={Schlachter},
+         familyi={S\bibinitperiod},
+         given={Thomas},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=SF}{%
+         family={Sager},
+         familyi={S\bibinitperiod},
+         given={Felix},
+         giveni={F\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{STSF1}
+    \strng{fullhash}{STSF1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \verb{doi}
+    \verb 10.1016/j.jprocont.2020.10.002
+    \endverb
+    \field{pages}{1\bibrangedash 11}
+    \field{title}{Hybrid modeling of physical systems using neural networks for
+  residual correction}
+    \field{volume}{96}
+    \field{journaltitle}{Journal of Process Control}
+    \field{year}{2020}
+  \endentry
+
+  \entry{AirflowApache_Orchestration}{misc}{}
+    \name{author}{1}{}{%
+      {{hash=T}{%
+         family={{The Apache Software Foundation}},
+         familyi={T\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{T1}
+    \strng{fullhash}{T1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{howpublished}{\url{https://airflow.apache.org/docs/}}
+    \field{note}{Consultado el 27 de octubre de 2025}
+    \field{title}{{Apache Airflow} Documentation}
+    \field{year}{2024}
+  \endentry
+
+  \entry{MLflowDatabricks}{article}{}
+    \true{moreauthor}
+    \true{morelabelname}
+    \name{author}{10}{}{%
+      {{hash=ZM}{%
+         family={Zaharia},
+         familyi={Z\bibinitperiod},
+         given={Matei},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=CA}{%
+         family={Chen},
+         familyi={C\bibinitperiod},
+         given={Andy},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=CSA}{%
+         family={Chung},
+         familyi={C\bibinitperiod},
+         given={Sue\bibnamedelima Ann},
+         giveni={S\bibinitperiod\bibinitdelim A\bibinitperiod},
+      }}%
+      {{hash=DX}{%
+         family={Ding},
+         familyi={D\bibinitperiod},
+         given={Xin},
+         giveni={X\bibinitperiod},
+      }}%
+      {{hash=FH}{%
+         family={Fang},
+         familyi={F\bibinitperiod},
+         given={Hao},
+         giveni={H\bibinitperiod},
+      }}%
+      {{hash=HJ}{%
+         family={Huang},
+         familyi={H\bibinitperiod},
+         given={Joe},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=HJ}{%
+         family={Huang},
+         familyi={H\bibinitperiod},
+         given={Jun},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=LT}{%
+         family={Lin},
+         familyi={L\bibinitperiod},
+         given={Tony},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=PD}{%
+         family={Park},
+         familyi={P\bibinitperiod},
+         given={Dongxu},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=ZA}{%
+         family={Zewdie},
+         familyi={Z\bibinitperiod},
+         given={Arsalan},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{ZM+1}
+    \strng{fullhash}{ZMCACSADXFHHJHJLTPDZA+1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{note}{Presentado en SysML 2018}
+    \field{title}{MLflow: A Platform for the Machine Learning Lifecycle}
+    \verb{url}
+    \verb https://www.mlflow.org/
+    \endverb
+    \field{journaltitle}{Proc. of the 2nd International Workshop on Systems for
+  ML}
+    \field{year}{2018}
+  \endentry
+
+  \entry{Holo2020_MLOps}{article}{}
+    \name{author}{2}{}{%
+      {{hash=HK}{%
+         family={Holovaty},
+         familyi={H\bibinitperiod},
+         given={Kathryn},
+         giveni={K\bibinitperiod},
+      }}%
+      {{hash=KM}{%
+         family={Kopecky},
+         familyi={K\bibinitperiod},
+         given={Matthew},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{HKKM1}
+    \strng{fullhash}{HKKM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{note}{Informe de arquitectura sobre el ciclo de vida de modelos en
+  producci\'on.}
+    \field{title}{MLOps: Principles and Practices}
+    \field{journaltitle}{Gartner Research Report}
+    \field{year}{2020}
+  \endentry
+
+  \entry{WNTRShaw2018}{article}{}
+    \name{author}{6}{}{%
+      {{hash=STL}{%
+         family={Shaw},
+         familyi={S\bibinitperiod},
+         given={Taylor\bibnamedelima L.},
+         giveni={T\bibinitperiod\bibinitdelim L\bibinitperiod},
+      }}%
+      {{hash=KAK}{%
+         family={Kanta},
+         familyi={K\bibinitperiod},
+         given={Adnan\bibnamedelima K.},
+         giveni={A\bibinitperiod\bibinitdelim K\bibinitperiod},
+      }}%
+      {{hash=ZA}{%
+         family={Zare},
+         familyi={Z\bibinitperiod},
+         given={Amin},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=WM}{%
+         family={Whelton},
+         familyi={W\bibinitperiod},
+         given={Mark},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=WAJ}{%
+         family={Whelton},
+         familyi={W\bibinitperiod},
+         given={Andrew\bibnamedelima J.},
+         giveni={A\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+      {{hash=BK}{%
+         family={Baur},
+         familyi={B\bibinitperiod},
+         given={Kevin},
+         giveni={K\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {ASCE}%
+    }
+    \strng{namehash}{STL+1}
+    \strng{fullhash}{STLKAKZAWMWAJBK1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \verb{doi}
+    \verb 10.1061/(ASCE)CP.1943-5487.0000720
+    \endverb
+    \field{number}{2}
+    \field{pages}{04017086}
+    \field{title}{WNTR: A Water Network Tool for Resilience}
+    \field{volume}{32}
+    \field{journaltitle}{Journal of Computing in Civil Engineering}
+    \field{year}{2018}
   \endentry
 \enddatalist
 \endinput

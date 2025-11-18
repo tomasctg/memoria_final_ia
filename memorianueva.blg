@@ -1,4 +1,4 @@
-This is BibTeX, Version 0.99d (TeX Live 2025/dev/Debian)
+This is BibTeX, Version 0.99d (TeX Live 2022/dev/Debian)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: memorianueva.aux
 The style file: biblatex.bst
@@ -23,50 +23,50 @@ Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
-Reallocated field_info (elt_size=4) to 11160 items from 5000.
+Reallocated field_info (elt_size=4) to 12000 items from 5000.
 Database file #1: memorianueva-blx.bib
 Database file #2: references.bib
-Biblatex version: 3.20
+Biblatex version: 3.17
 Reallocated wiz_functions (elt_size=4) to 9000 items from 6000.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
-You've used 44 entries,
-            6402 wiz_defined-function locations,
-            1463 strings with 18973 characters,
-and the built_in function-call counts, 279951 in all, are:
-= -- 22384
-> -- 3874
-< -- 1050
-+ -- 6756
-- -- 1221
-* -- 18957
-:= -- 29718
+You've used 50 entries,
+            6399 wiz_defined-function locations,
+            1505 strings with 20337 characters,
+and the built_in function-call counts, 335710 in all, are:
+= -- 27223
+> -- 4489
+< -- 1171
++ -- 8595
+- -- 1470
+* -- 22783
+:= -- 36623
 add.period$ -- 0
-call.type$ -- 44
-change.case$ -- 655
+call.type$ -- 50
+change.case$ -- 716
 chr.to.int$ -- 42
-cite$ -- 86
-duplicate$ -- 27863
-empty$ -- 26238
-format.name$ -- 2322
-if$ -- 58148
+cite$ -- 98
+duplicate$ -- 33988
+empty$ -- 30910
+format.name$ -- 2779
+if$ -- 69011
 int.to.chr$ -- 0
-int.to.str$ -- 121
+int.to.str$ -- 135
 missing$ -- 0
-newline$ -- 1150
-num.names$ -- 2048
-pop$ -- 14983
+newline$ -- 1377
+num.names$ -- 2299
+pop$ -- 17244
 preamble$ -- 1
-purify$ -- 853
+purify$ -- 966
 quote$ -- 0
-skip$ -- 7568
+skip$ -- 8560
 stack$ -- 0
-substring$ -- 41831
-swap$ -- 5337
-text.length$ -- 801
+substring$ -- 50831
+swap$ -- 6231
+text.length$ -- 927
 text.prefix$ -- 0
 top$ -- 1
-type$ -- 1480
+type$ -- 1684
 warning$ -- 0
-while$ -- 3312
+while$ -- 4178
 width$ -- 0
-write$ -- 1107
+write$ -- 1328
