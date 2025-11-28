@@ -9,31 +9,34 @@
 \contentsline {section}{\numberline {1.4}Objetivos y alcance}{5}{section.1.4}%
 \contentsline {chapter}{\numberline {2}Introducción específica}{7}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Teoría del modelado híbrido: corrección de residuales}{7}{section.2.1}%
-\contentsline {subsection}{\numberline {2.1.1}Componente físico ($f_{fisico}$)}{8}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.1}Componente físico ($f_{fisico}$)}{7}{subsection.2.1.1}%
 \contentsline {subsection}{\numberline {2.1.2}Componente corrector ($f_{AI}$)}{8}{subsection.2.1.2}%
-\contentsline {section}{\numberline {2.2}Formulación del problema de optimización}{9}{section.2.2}%
-\contentsline {subsection}{\numberline {2.2.1}Formulación matemática formal}{9}{subsection.2.2.1}%
-\contentsline {subsubsection}{Función objetivo ponderada}{9}{section*.7}%
-\contentsline {subsubsection}{Restricciones del problema}{10}{section*.8}%
-\contentsline {section}{\numberline {2.3}Teoría de optimización: algoritmos genéticos}{10}{section.2.3}%
-\contentsline {subsection}{\numberline {2.3.1}Anatomía de un algoritmo genético}{10}{subsection.2.3.1}%
-\contentsline {subsubsection}{Codificación del cromosoma (representación de la solución)}{10}{section*.9}%
-\contentsline {subsubsection}{Operadores de selección}{11}{section*.10}%
-\contentsline {subsubsection}{Operadores de cruce (\textit {crossover} / recombinación)}{11}{section*.12}%
-\contentsline {subsubsection}{Operadores de mutación (diversidad)}{12}{section*.14}%
-\contentsline {section}{\numberline {2.4}Manejo de restricciones: funciones de penalización}{12}{section.2.4}%
-\contentsline {chapter}{\numberline {3}Diseño e implementación}{15}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Arquitectura General del Software}{15}{section.3.1}%
-\contentsline {subsubsection}{Subsistema de entrenamiento y ciclo de vida (MLOps)}{15}{section*.16}%
-\contentsline {subsubsection}{Subsistema de optimización y servicio}{17}{section*.17}%
-\contentsline {section}{\numberline {3.2}Implementación del gemelo digital híbrido}{17}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Implementación del optimizador de despacho (GA)}{17}{section.3.3}%
-\contentsline {section}{\numberline {3.4}Implementación de funciones de costo y penalizaciones}{17}{section.3.4}%
-\contentsline {chapter}{\numberline {4}Ensayos y resultados}{19}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Entorno y banco de pruebas}{19}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Pruebas del gemelo digital hibrido}{19}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Caso de estudio: simulación de despacho}{19}{section.4.3}%
-\contentsline {chapter}{\numberline {5}Conclusiones}{21}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Resultados obtenidos}{21}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Trabajo futuro}{21}{section.5.2}%
-\contentsline {chapter}{Bibliografía}{23}{appendix*.19}%
+\contentsline {section}{\numberline {2.2}Formulación del problema de optimización}{8}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Formulación matemática formal}{8}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Función objetivo ponderada}{8}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Restricciones del problema}{9}{subsection.2.2.3}%
+\contentsline {section}{\numberline {2.3}Teoría de optimización: algoritmos genéticos}{9}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Codificación del cromosoma (representación de la solución)}{9}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Operadores evolutivos}{10}{subsection.2.3.2}%
+\contentsline {section}{\numberline {2.4}Herramientas computacionales y métricas}{10}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Bibliotecas y entorno de desarrollo}{10}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Métricas de evaluación}{11}{subsection.2.4.2}%
+\contentsline {chapter}{\numberline {3}Diseño e implementación}{13}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Arquitectura general del software}{13}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Subsistema de entrenamiento y ciclo de vida (MLOps)}{13}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Subsistema de optimización y servicio}{14}{subsection.3.1.2}%
+\contentsline {section}{\numberline {3.2}Implementación del gemelo digital híbrido}{16}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Construcción y parametrización del modelo físico}{16}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Ingeniería de datos y modelo de corrección}{17}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Ciclo de vida y gestión de artefactos (MLOps)}{18}{subsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.4}Orquestación y ejecución en el servicio de inferencia}{18}{subsection.3.2.4}%
+\contentsline {section}{\numberline {3.3}Implementación del optimizador de despacho (GA)}{20}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Implementación de funciones de costo y penalizaciones}{20}{section.3.4}%
+\contentsline {chapter}{\numberline {4}Ensayos y resultados}{21}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Entorno y banco de pruebas}{21}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Pruebas del gemelo digital hibrido}{21}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Caso de estudio: simulación de despacho}{21}{section.4.3}%
+\contentsline {chapter}{\numberline {5}Conclusiones}{23}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Resultados obtenidos}{23}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Trabajo futuro}{23}{section.5.2}%
+\contentsline {chapter}{Bibliografía}{25}{appendix*.10}%

@@ -644,78 +644,6 @@
     \field{year}{2023}
   \endentry
 
-  \entry{USEPA_WNTR_2024}{manual}{}
-    \name{author}{1}{}{%
-      {{hash=U}{%
-         family={{U.S. Environmental Protection Agency}},
-         familyi={U\bibinitperiod},
-      }}%
-    }
-    \list{organization}{1}{%
-      {U.S. Environmental Protection Agency}%
-    }
-    \strng{namehash}{U1}
-    \strng{fullhash}{U1}
-    \field{labelnamesource}{author}
-    \field{labeltitlesource}{title}
-    \field{note}{Accessed: YYYY-MM-DD}
-    \field{title}{Water Network Tool for Resilience (WNTR) Documentation}
-    \verb{url}
-    \verb https://usepa.github.io/WNTR/
-    \endverb
-    \list{location}{1}{%
-      {Washington, D.C.}%
-    }
-    \field{year}{2024}
-  \endentry
-
-  \entry{HybridModelsKaggle}{misc}{}
-    \name{author}{1}{}{%
-      {{hash=HR}{%
-         family={Holbrook},
-         familyi={H\bibinitperiod},
-         given={Ryan},
-         giveni={R\bibinitperiod},
-      }}%
-    }
-    \list{publisher}{1}{%
-      {Kaggle}%
-    }
-    \strng{namehash}{HR1}
-    \strng{fullhash}{HR1}
-    \field{labelnamesource}{author}
-    \field{labeltitlesource}{title}
-  \field{howpublished}{\url{https://www.kaggle.com/code/ryanholbrook/hybrid-models}}
-    \field{note}{Accedido: 3 de septiembre de 2025}
-    \field{title}{Hybrid Models}
-    \field{year}{2025}
-  \endentry
-
-  \entry{HybridSeriesArxiv}{misc}{}
-    \name{author}{1}{}{%
-      {{hash=eaXW}{%
-         prefix={et},
-         prefixi={e\bibinitperiod},
-         family={al.},
-         familyi={a\bibinitperiod},
-         given={Xinyang\bibnamedelima Wu},
-         giveni={X\bibinitperiod\bibinitdelim W\bibinitperiod},
-      }}%
-    }
-    \strng{namehash}{aXWe1}
-    \strng{fullhash}{aXWe1}
-    \field{labelnamesource}{author}
-    \field{labeltitlesource}{title}
-    \verb{eprint}
-    \verb 2112.01475
-    \endverb
-    \field{howpublished}{\url{https://arxiv.org/pdf/2112.01475}}
-    \field{title}{A Hybrid Science-Guided Machine Learning Approach for
-  Modeling Chemical Processes}
-    \field{eprinttype}{arXiv}
-    \field{year}{2021}
-  \endentry
-
   \entry{ref7}{misc}{}
     \name{author}{1}{}{%
       {{hash=BW}{%
@@ -735,99 +663,6 @@
     \verb https://www.design.upenn.edu/work/white-black-and-gray-box-modelling
     \endverb
     \field{year}{2025}
-  \endentry
-
-  \entry{ref8}{article}{}
-    \name{author}{1}{}{%
-      {{hash=V}{%
-         family={Various},
-         familyi={V\bibinitperiod},
-      }}%
-    }
-    \strng{namehash}{V1}
-    \strng{fullhash}{V1}
-    \field{labelnamesource}{author}
-    \field{labeltitlesource}{title}
-    \field{title}{A Comparative Study of White Box, Black Box and Grey Box
-  Testing Techniques}
-    \verb{url}
-    \verb https://thesai.org/Downloads/Volume3No6/Paper%203-A%20Comparative%20S
-    \verb tudy%20of%20White%20Box,%20Black%20Box%20and%20Grey%20Box%20Testing%2
-    \verb 0Techniques.pdf
-    \endverb
-    \field{journaltitle}{TheSAI}
-    \field{year}{2012}
-  \endentry
-
-  \entry{ref9}{article}{}
-    \name{author}{5}{}{%
-      {{hash=TY}{%
-         family={Tao},
-         familyi={T\bibinitperiod},
-         given={Y.},
-         giveni={Y\bibinitperiod},
-      }}%
-      {{hash=YD}{%
-         family={Yan},
-         familyi={Y\bibinitperiod},
-         given={D.},
-         giveni={D\bibinitperiod},
-      }}%
-      {{hash=YH}{%
-         family={Yang},
-         familyi={Y\bibinitperiod},
-         given={H.},
-         giveni={H\bibinitperiod},
-      }}%
-      {{hash=ML}{%
-         family={Ma},
-         familyi={M\bibinitperiod},
-         given={L.},
-         giveni={L\bibinitperiod},
-      }}%
-      {{hash=KC}{%
-         family={Kou},
-         familyi={K\bibinitperiod},
-         given={C.},
-         giveni={C\bibinitperiod},
-      }}%
-    }
-    \strng{namehash}{TY+1}
-    \strng{fullhash}{TYYDYHMLKC1}
-    \field{labelnamesource}{author}
-    \field{labeltitlesource}{title}
-    \field{number}{11}
-    \field{title}{Multi-objective optimization of water distribution networks
-  based on non-dominated sequencing genetic algorithm}
-    \verb{url}
-    \verb https://journals.plos.org/plosone/article?id=10.1371/journal.pone.027
-    \verb 7954
-    \endverb
-    \field{volume}{17}
-    \field{journaltitle}{PLoS ONE}
-    \field{year}{2022}
-  \endentry
-
-  \entry{ref10}{article}{}
-    \name{author}{1}{}{%
-      {{hash=V}{%
-         family={Various},
-         familyi={V\bibinitperiod},
-      }}%
-    }
-    \strng{namehash}{V1}
-    \strng{fullhash}{V1}
-    \field{labelnamesource}{author}
-    \field{labeltitlesource}{title}
-    \field{number}{6}
-    \field{title}{Optimization of Water Distribution Networks Using Genetic
-  Algorithm Based SOP–WDN Program}
-    \verb{url}
-    \verb https://www.mdpi.com/2073-4441/14/6/851
-    \endverb
-    \field{volume}{14}
-    \field{journaltitle}{MDPI}
-    \field{year}{2022}
   \endentry
 
   \entry{ref4}{article}{}
@@ -918,7 +753,56 @@
     \field{year}{2021}
   \endentry
 
-  \entry{ref6}{article}{}
+  \entry{ref9}{article}{}
+    \name{author}{5}{}{%
+      {{hash=TY}{%
+         family={Tao},
+         familyi={T\bibinitperiod},
+         given={Y.},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=YD}{%
+         family={Yan},
+         familyi={Y\bibinitperiod},
+         given={D.},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=YH}{%
+         family={Yang},
+         familyi={Y\bibinitperiod},
+         given={H.},
+         giveni={H\bibinitperiod},
+      }}%
+      {{hash=ML}{%
+         family={Ma},
+         familyi={M\bibinitperiod},
+         given={L.},
+         giveni={L\bibinitperiod},
+      }}%
+      {{hash=KC}{%
+         family={Kou},
+         familyi={K\bibinitperiod},
+         given={C.},
+         giveni={C\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{TY+1}
+    \strng{fullhash}{TYYDYHMLKC1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{number}{11}
+    \field{title}{Multi-objective optimization of water distribution networks
+  based on non-dominated sequencing genetic algorithm}
+    \verb{url}
+    \verb https://journals.plos.org/plosone/article?id=10.1371/journal.pone.027
+    \verb 7954
+    \endverb
+    \field{volume}{17}
+    \field{journaltitle}{PLoS ONE}
+    \field{year}{2022}
+  \endentry
+
+  \entry{ref10}{article}{}
     \name{author}{1}{}{%
       {{hash=V}{%
          family={Various},
@@ -929,13 +813,66 @@
     \strng{fullhash}{V1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
-    \field{title}{Efficient Building Simulations Using a Novel Grey-Box Model
-  for an Integrated Water-Based Heating and Cooling System}
+    \field{number}{6}
+    \field{title}{Optimization of Water Distribution Networks Using Genetic
+  Algorithm Based SOP–WDN Program}
     \verb{url}
-    \verb https://www.mdpi.com/2075-5309/15/11/1959
+    \verb https://www.mdpi.com/2073-4441/14/6/851
     \endverb
+    \field{volume}{14}
     \field{journaltitle}{MDPI}
-    \field{year}{2024}
+    \field{year}{2022}
+  \endentry
+
+  \entry{meschter_2001_hazen}{book}{}
+    \name{author}{1}{}{%
+      {{hash=MLW}{%
+         family={Mays},
+         familyi={M\bibinitperiod},
+         given={Larry\bibnamedelima W.},
+         giveni={L\bibinitperiod\bibinitdelim W\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {McGraw-Hill}%
+    }
+    \strng{namehash}{MLW1}
+    \strng{fullhash}{MLW1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{chapter}{Hydraulic Principles of Pipe Flow}
+    \field{title}{Water Distribution Systems Handbook}
+    \field{year}{2001}
+  \endentry
+
+  \entry{keller_karmeli_1975}{article}{}
+    \name{author}{2}{}{%
+      {{hash=KJ}{%
+         family={Keller},
+         familyi={K\bibinitperiod},
+         given={J.},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=KD}{%
+         family={Karmeli},
+         familyi={K\bibinitperiod},
+         given={D.},
+         giveni={D\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {ASCE}%
+    }
+    \strng{namehash}{KJKD1}
+    \strng{fullhash}{KJKD1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{number}{IR3}
+    \field{pages}{275\bibrangedash 291}
+    \field{title}{Trickle Irrigation Design Parameters}
+    \field{volume}{101}
+    \field{journaltitle}{Journal of the Irrigation and Drainage Division}
+    \field{year}{1975}
   \endentry
 
   \entry{ref15}{report}{}
@@ -1004,7 +941,7 @@
     \field{year}{2021}
   \endentry
 
-  \entry{ref18}{article}{}
+  \entry{ref20}{article}{}
     \name{author}{1}{}{%
       {{hash=V}{%
          family={Various},
@@ -1015,13 +952,15 @@
     \strng{fullhash}{V1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
-    \field{title}{Performance of Genetic Algorithm with Different Encoding
-  Scheme}
+    \field{title}{A Comparative Review Between Various Selection Techniques In
+  Genetic Algorithm For Finding Optimal Solutions}
     \verb{url}
-    \verb https://gjeta.com/sites/default/files/GJETA-2025-0203.pdf
+    \verb https://www.researchgate.net/publication/364952362_A_Comparative_Revi
+    \verb ew_Between_Various_Selection_Techniques_In_Genetic_Algorithm_For_Find
+    \verb ing_Optimal_Solutions
     \endverb
-    \field{journaltitle}{GJETA}
-    \field{year}{2025}
+    \field{journaltitle}{ResearchGate}
+    \field{year}{2022}
   \endentry
 
   \entry{ref19}{article}{}
@@ -1046,155 +985,86 @@
     \field{year}{2022}
   \endentry
 
-  \entry{ref20}{article}{}
-    \name{author}{1}{}{%
-      {{hash=V}{%
-         family={Various},
-         familyi={V\bibinitperiod},
-      }}%
-    }
-    \strng{namehash}{V1}
-    \strng{fullhash}{V1}
-    \field{labelnamesource}{author}
-    \field{labeltitlesource}{title}
-    \field{title}{A Comparative Review Between Various Selection Techniques In
-  Genetic Algorithm For Finding Optimal Solutions}
-    \verb{url}
-    \verb https://www.researchgate.net/publication/364952362_A_Comparative_Revi
-    \verb ew_Between_Various_Selection_Techniques_In_Genetic_Algorithm_For_Find
-    \verb ing_Optimal_Solutions
-    \endverb
-    \field{journaltitle}{ResearchGate}
-    \field{year}{2022}
-  \endentry
-
-  \entry{ref21}{article}{}
-    \name{author}{1}{}{%
-      {{hash=V}{%
-         family={Various},
-         familyi={V\bibinitperiod},
-      }}%
-    }
-    \strng{namehash}{V1}
-    \strng{fullhash}{V1}
-    \field{labelnamesource}{author}
-    \field{labeltitlesource}{title}
-    \field{title}{A Comparison of Selection Schemes used in Genetic Algorithms
-  for solving the Travelling Salesman Problem}
-    \verb{url}
-    \verb https://core.ac.uk/download/pdf/159178846.pdf
-    \endverb
-    \field{journaltitle}{CORE}
-  \endentry
-
-  \entry{ref22}{article}{}
-    \name{author}{1}{}{%
-      {{hash=V}{%
-         family={Various},
-         familyi={V\bibinitperiod},
-      }}%
-    }
-    \strng{namehash}{V1}
-    \strng{fullhash}{V1}
-    \field{labelnamesource}{author}
-    \field{labeltitlesource}{title}
-    \field{title}{Comparative Analysis of Rank and Roulette Wheel Selection
-  Methods for Optimizing Spatial Layout Arrangements}
-    \verb{url}
-    \verb https://thesai.org/Downloads/Volume16No6/Paper_56-Comparative_Analysi
-    \verb s_of_Rank_and_Roulette_Wheel_Selection.pdf
-    \endverb
-    \field{journaltitle}{TheSAI}
-    \field{year}{2024}
-  \endentry
-
-  \entry{ref24}{misc}{}
-    \name{author}{1}{}{%
-      {{hash=S}{%
-         family={{Stack Overflow Community}},
+  \entry{WNTRShaw2018}{article}{}
+    \name{author}{6}{}{%
+      {{hash=STL}{%
+         family={Shaw},
          familyi={S\bibinitperiod},
+         given={Taylor\bibnamedelima L.},
+         giveni={T\bibinitperiod\bibinitdelim L\bibinitperiod},
+      }}%
+      {{hash=KAK}{%
+         family={Kanta},
+         familyi={K\bibinitperiod},
+         given={Adnan\bibnamedelima K.},
+         giveni={A\bibinitperiod\bibinitdelim K\bibinitperiod},
+      }}%
+      {{hash=ZA}{%
+         family={Zare},
+         familyi={Z\bibinitperiod},
+         given={Amin},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=WM}{%
+         family={Whelton},
+         familyi={W\bibinitperiod},
+         given={Mark},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=WAJ}{%
+         family={Whelton},
+         familyi={W\bibinitperiod},
+         given={Andrew\bibnamedelima J.},
+         giveni={A\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+      {{hash=BK}{%
+         family={Baur},
+         familyi={B\bibinitperiod},
+         given={Kevin},
+         giveni={K\bibinitperiod},
       }}%
     }
-    \strng{namehash}{S1}
-    \strng{fullhash}{S1}
-    \field{labelnamesource}{author}
-    \field{labeltitlesource}{title}
-  \field{howpublished}{\url{https://stackoverflow.com/questions/12687963/genetic-algorithms-crossover-and-mutation-operators-for-paths}}
-    \field{title}{Genetic algorithms crossover and mutation operators for
-  paths}
-    \field{year}{2012}
-  \endentry
-
-  \entry{ref2}{misc}{}
-    \name{author}{1}{}{%
-      {{hash=a}{%
-         family={arXiv},
-         familyi={a\bibinitperiod},
-      }}%
+    \list{publisher}{1}{%
+      {ASCE}%
     }
-    \strng{namehash}{a1}
-    \strng{fullhash}{a1}
+    \strng{namehash}{STL+1}
+    \strng{fullhash}{STLKAKZAWMWAJBK1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
-    \field{howpublished}{\url{https://arxiv.org/abs/1810.06191}}
-    \field{note}{Accessed: October 15, 2025}
-    \field{title}{Inverse Problems and Data Assimilation}
+    \verb{doi}
+    \verb 10.1061/(ASCE)CP.1943-5487.0000720
+    \endverb
+    \field{number}{2}
+    \field{pages}{04017086}
+    \field{title}{WNTR: A Water Network Tool for Resilience}
+    \field{volume}{32}
+    \field{journaltitle}{Journal of Computing in Civil Engineering}
     \field{year}{2018}
   \endentry
 
-  \entry{ref13}{article}{}
-    \name{author}{2}{}{%
-      {{hash=GB}{%
-         family={Grové},
-         familyi={G\bibinitperiod},
-         given={B.},
-         giveni={B\bibinitperiod},
-      }}%
-      {{hash=DPMC}{%
-         family={Du\bibnamedelima Plessis},
-         familyi={D\bibinitperiod\bibinitdelim P\bibinitperiod},
-         given={M.\bibnamedelima C.},
-         giveni={M\bibinitperiod\bibinitdelim C\bibinitperiod},
-      }}%
-    }
-    \strng{namehash}{GBDPMC1}
-    \strng{fullhash}{GBDPMC1}
-    \field{labelnamesource}{author}
-    \field{labeltitlesource}{title}
-    \field{number}{1}
-    \field{title}{Optimising intra-seasonal irrigation water allocation: a
-  comparison of mixed integer nonlinear programming and differential evolution}
-    \verb{url}
-    \verb https://www.watersa.net/article/view/6674
-    \endverb
-    \field{volume}{45}
-    \field{journaltitle}{Water SA}
-    \field{year}{2019}
-  \endentry
-
-  \entry{ref3}{misc}{}
-    \field{labeltitlesource}{title}
-  \field{howpublished}{\url{https://www.weap21.org/webhelp/mass_balance_constraints.htm}}
-    \field{note}{Accessed: October 15, 2025}
-    \field{title}{Mass Balance Constraints - WEAP}
-  \endentry
-
-  \entry{ref1}{misc}{}
+  \entry{Paszke2019_PyTorch}{incollection}{}
+    \true{moreauthor}
+    \true{morelabelname}
     \name{author}{1}{}{%
-      {{hash=A}{%
-         family={{Autor Anónimo}},
-         familyi={A\bibinitperiod},
+      {{hash=PA}{%
+         family={Paszke},
+         familyi={P\bibinitperiod},
+         given={Adam},
+         giveni={A\bibinitperiod},
       }}%
     }
-    \strng{namehash}{A1}
-    \strng{fullhash}{A1}
+    \list{publisher}{1}{%
+      {Curran Associates, Inc.}%
+    }
+    \strng{namehash}{PA+1}
+    \strng{fullhash}{PA+1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
-    \field{note}{Documento interno del proyecto}
-    \field{title}{Un Marco para la Estimación de Estado Completo en Redes
-  Hidráulicas mediante Modelado Híbrido de Residuales y Solucionadores de
-  Problemas Inversos}
-    \field{year}{2025}
+    \field{booktitle}{Advances in Neural Information Processing Systems 32}
+    \field{pages}{8024\bibrangedash 8035}
+    \field{title}{PyTorch: An Imperative Style, High-Performance Deep Learning
+  Library}
+    \field{year}{2019}
   \endentry
 
   \entry{Newman2015_Microservices}{book}{}
@@ -1370,61 +1240,65 @@
     \field{year}{2020}
   \endentry
 
-  \entry{WNTRShaw2018}{article}{}
-    \name{author}{6}{}{%
-      {{hash=STL}{%
-         family={Shaw},
-         familyi={S\bibinitperiod},
-         given={Taylor\bibnamedelima L.},
-         giveni={T\bibinitperiod\bibinitdelim L\bibinitperiod},
-      }}%
-      {{hash=KAK}{%
-         family={Kanta},
-         familyi={K\bibinitperiod},
-         given={Adnan\bibnamedelima K.},
-         giveni={A\bibinitperiod\bibinitdelim K\bibinitperiod},
-      }}%
-      {{hash=ZA}{%
-         family={Zare},
-         familyi={Z\bibinitperiod},
-         given={Amin},
-         giveni={A\bibinitperiod},
-      }}%
-      {{hash=WM}{%
-         family={Whelton},
-         familyi={W\bibinitperiod},
-         given={Mark},
-         giveni={M\bibinitperiod},
-      }}%
-      {{hash=WAJ}{%
-         family={Whelton},
-         familyi={W\bibinitperiod},
-         given={Andrew\bibnamedelima J.},
-         giveni={A\bibinitperiod\bibinitdelim J\bibinitperiod},
-      }}%
-      {{hash=BK}{%
-         family={Baur},
-         familyi={B\bibinitperiod},
-         given={Kevin},
-         giveni={K\bibinitperiod},
+  \entry{FastAPI_Documentation}{manual}{}
+    \name{author}{1}{}{%
+      {{hash=RS}{%
+         family={Ram{\'i}rez},
+         familyi={R\bibinitperiod},
+         given={Sebasti{\'a}n},
+         giveni={S\bibinitperiod},
       }}%
     }
-    \list{publisher}{1}{%
-      {ASCE}%
-    }
-    \strng{namehash}{STL+1}
-    \strng{fullhash}{STLKAKZAWMWAJBK1}
+    \strng{namehash}{RS1}
+    \strng{fullhash}{RS1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
-    \verb{doi}
-    \verb 10.1061/(ASCE)CP.1943-5487.0000720
+    \field{note}{Framework web moderno y de alto rendimiento para construir
+  APIs con Python}
+    \field{title}{FastAPI Documentation}
+    \verb{url}
+    \verb https://fastapi.tiangolo.com/
     \endverb
-    \field{number}{2}
-    \field{pages}{04017086}
-    \field{title}{WNTR: A Water Network Tool for Resilience}
-    \field{volume}{32}
-    \field{journaltitle}{Journal of Computing in Civil Engineering}
-    \field{year}{2018}
+    \field{year}{2024}
+  \endentry
+
+  \entry{DockerSwarm_Documentation}{manual}{}
+    \name{author}{1}{}{%
+      {{hash=D}{%
+         family={{Docker Inc.}},
+         familyi={D\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{D1}
+    \strng{fullhash}{D1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{note}{Herramienta de orquestaci{\'o}n nativa para gestionar
+  cl{\'u}steres de Docker}
+    \field{title}{Docker Swarm Mode Overview}
+    \verb{url}
+    \verb https://docs.docker.com/engine/swarm/
+    \endverb
+    \field{year}{2024}
+  \endentry
+
+  \entry{NGINX_Documentation}{manual}{}
+    \name{author}{1}{}{%
+      {{hash=F}{%
+         family={{F5, Inc.}},
+         familyi={F\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{F1}
+    \strng{fullhash}{F1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{note}{Servidor web y balanceador de carga de alto rendimiento}
+    \field{title}{NGINX Documentation}
+    \verb{url}
+    \verb https://nginx.org/en/docs/
+    \endverb
+    \field{year}{2024}
   \endentry
 \enddatalist
 \endinput

@@ -2,7 +2,7 @@
 
 \label{Chapter3} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
-Todos los capítulos deben comenzar con un breve párrafo introductorio que indique cuál es el contenido que se encontrará al leerlo.  La redacción sobre el contenido de la memoria debe hacerse en presente y todo lo referido al proyecto en pasado, siempre de modo impersonal.
+En este capítulo se describe la solución de software completa, detallando la arquitectura y la implementación técnica. La solución se centra en la integración de la simulación hidráulica y la inteligencia artificial para crear un gemelo digital híbrido. Finalmente, se explica cómo este gemelo se conecta a través de una interfaz de programación (API) con el motor de optimización para automatizar el despacho de riego.
 
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
@@ -42,59 +42,149 @@ Todos los capítulos deben comenzar con un breve párrafo introductorio que indi
 
 
 
-\section{Arquitectura General del Software}
+\section{Arquitectura general del software}
 \label{sec:arquitectura_general}
 
 El diseño del sistema de riego se basa en una arquitectura de cuatro capas: la capa física, la de control y adquisición, la de gestión y optimización, y la de presentación (ver figura \ref{fig:diagrama_capas}). Este trabajo se enfoca exclusivamente en la capa de gestión y optimización, que es responsable de transformar los datos históricos y de telemetría en un plan de despacho de riego óptimo.
 
-El software se implementó bajo una arquitectura de microservicios \citep{Newman2015_Microservices}. Esta arquitectura garantiza la separación de responsabilidades y la escalabilidad horizontal de los dos componentes centrales: el entrenamiento continuo del modelo predictivo y su consumo operativo.
+El software se implementó bajo una arquitectura de microservicios \citep{Newman2015_Microservices}. Esto garantiza la separación de responsabilidades y la escalabilidad horizontal de los dos componentes centrales: el entrenamiento continuo del modelo predictivo y su consumo operativo.
 
-El diseño se basa en dos subsistemas, encapsulados en contenedores \textit{Docker} para asegurar un entorno de ejecución aislado y consistente: el subsistema de entrenamiento y ciclo de vida (MLOps) y el subsistema de optimización y servicio. La vinculación entre ellos se establece a través de un registro central de modelos, lo que permite al motor de decisión consumir siempre la versión más precisa del gemelo digital híbrido, mientras el \textit{pipeline} de MLOps opera de forma asíncrona.
-
-\begin{figure}[ht]
-    \centering
-	\includegraphics[width=\textwidth]{Figures/despacho_v1.pdf}
-    \caption{Diagrama de capas del sistema de riego, donde el foco del proyecto es la capa de gestión y optimización.}
-    \label{fig:diagrama_capas}
-\end{figure}
+El diseño se basa en dos subsistemas, encapsulados en contenedores Docker para asegurar un entorno de ejecución aislado y consistente: el subsistema de entrenamiento y ciclo de vida (MLOps) y el subsistema de optimización y servicio. La vinculación entre ellos se establece a través de un registro central de modelos, lo que permite al motor de decisión consumir siempre la versión más precisa del gemelo digital híbrido, mientras el \textit{pipeline} de MLOps opera de forma asíncrona.
 
 
-\subsubsection{Subsistema de entrenamiento y ciclo de vida (MLOps)}
+\subsection{Subsistema de entrenamiento y ciclo de vida (MLOps)}
 \label{sec:subsistema_mlops}
 
-Este subsistema tiene como objetivo principal la sostenibilidad de la precisión del modelo predictivo. Mantiene el gemelo digital híbrido actualizado al ejecutar un ciclo de vida automatizado que mitiga el (\textit{model drift}) \citep{Schlachter2020_HybridModel}. Este flujo de trabajo, fundamental para un entorno de producción, está orquestado por \textit{pipelines} de \textit{Apache Airflow} \citep{AirflowApache_Orchestration}.
+Este subsistema tiene como objetivo principal la sostenibilidad de la precisión del modelo predictivo. Mantiene el gemelo digital híbrido actualizado al ejecutar un ciclo de vida automatizado que mitiga el (\textit{model drift}) \citep{Schlachter2020_HybridModel}. Este flujo de trabajo, fundamental para un entorno de producción, está orquestado por \textit{pipelines} de Apache Airflow \citep{AirflowApache_Orchestration}.
 
 La arquitectura comprende un \textit{stack} de infraestructura para el manejo de los artefactos y la trazabilidad de los experimentos:
 \begin{itemize}
-    \item Data Lake (\textit{MinIO}): repositorio central de objetos que almacena los datos de telemetría históricos y los \textit{datasets} limpios, actuando como la fuente única de verdad para el entrenamiento.
-    \item Registro de Artefactos (\textit{MLflow}): administra el ciclo de vida completo del modelo \citep{MLflowDatabricks}. Registra los hiperparámetros, métricas y los artefactos binarios (el modelo y los transformadores de características) que son promovidos a producción para su consumo por el servicio de inferencia.
-    \item Orquestación (\textit{PostgreSQL/Airflow}): la base de datos \textit{PostgreSQL} gestiona los metadatos y el estado de los \textit{pipelines} de \textit{Airflow}, asegurando la fiabilidad y reintentos del proceso de \textit{Integración y Despliegue Continuo} (CI/CD) \citep{Holo2020_MLOps}.
+    \item Data Lake (MinIO): repositorio central de objetos que almacena los datos de telemetría históricos y los datasets limpios, actuando como la fuente única de verdad para el entrenamiento.
+    \item Registro de Artefactos (MLflow): administra el ciclo de vida completo del modelo \citep{MLflowDatabricks}. Registra los hiperparámetros, métricas y los artefactos binarios (el modelo y los transformadores de características) que son promovidos a producción para su consumo por el servicio de inferencia.
+    \item Orquestación (PostgreSQL/Airflow): la base de datos PostgreSQL gestiona los metadatos y el estado de los \textit{pipelines} de Airflow, asegurando la fiabilidad y reintentos del proceso de integración y despliegue continuo (CI/CD) \citep{Holo2020_MLOps}.
 \end{itemize}
 
 El \textit{pipeline} de entrenamiento se estructura en una secuencia de módulos lógicos de procesamiento de datos:
 
 \begin{enumerate}
-    \item Módulo de ingesta y consolidación: responsable de la lectura y unificación de los datos de telemetría histórica del campo desde el \textit{Data Lake}.
+    \item Módulo de ingesta y consolidación: responsable de la lectura y unificación de los datos de telemetría histórica del campo desde el Data Lake.
     \item Módulo de limpieza: filtra los registros inconsistentes y asegura la calidad del \textit{dataset}.
     \item Módulo de ingeniería de características: genera las variables sintéticas necesarias para el modelo de corrección de residuales, como el número de actuadores activos.
-    \item Módulo de entrenamiento: ejecuta el entrenamiento. Si el nuevo modelo supera los umbrales de desempeño, es promovido al alias de \textit{"production"} en el registro de modelos, completando el ciclo de integración y despliegue continuo (CI/CD) \citep{Holo2020_MLOps}.
+    \item Módulo de entrenamiento: ejecuta el entrenamiento. Si el nuevo modelo supera los umbrales de desempeño, es promovido al alias de \texttt{production} en el registro de modelos, lo que completa el ciclo de integración y despliegue continuo (CI/CD) \citep{Holo2020_MLOps}.
 \end{enumerate}
 
-\subsubsection{Subsistema de optimización y servicio}
+
+\subsection{Subsistema de optimización y servicio}
 \label{sec:subsistema_optimizacion}
 
-Este subsistema constituye el corazón operativo del sistema, implementando el motor de decisión. Se diferencian dos partes importantes.
-\begin{enumerate}
-    \item Capa de servicio de inferencia (\textit{Snapshot API}):
-    El diseño de arquitectura resuelve el desafío de rendimiento mediante un microservicio RESTful asíncrono implementado con \textit{FastAPI}. Al iniciar, carga el gemelo digital híbrido, compuesto por el modelo físico \textit{WNTR} \citep{WNTRShaw2018} y el modelo de IA de corrección de residuales, directamente en memoria. Esto transforma el complejo proceso de simulación en una llamada de servicio de baja latencia.
-    La \textit{API} está diseñada para ser escalable horizontalmente, utilizando \textit{NGINX} como balanceador de carga. Esto permite al optimizador enviar de manera concurrente miles de peticiones de simulación por segundo, evaluando un gran número de soluciones candidatas en paralelo.
+Este subsistema constituye el corazón operativo del sistema, implementando el motor de decisión encargado de resolver el problema de programación matemática. Su arquitectura es diseñada específicamente para superar el cuello de botella computacional que representa la simulación hidráulica secuencial. Para ello, se diferencian dos componentes acoplados mediante una estrategia de escalabilidad horizontal.
 
-    \item Motor de optimización (\textit{algoritmo genético}):
-    El motor implementa el AG. Su conexión con la \textit{Snapshot API} se da a través de una interfaz que distribuye la evaluación de la función de aptitud de cada individuo (plan de riego) a través de las instancias del microservicio de inferencia.
+\begin{enumerate}
+    \item Capa de servicio de inferencia distribuida (\textit{Snapshot API}):
+    el diseño de arquitectura resuelve el desafío de rendimiento mediante la implementación de un clúster de microservicios de simulación. Cada unidad es un servicio RESTful asíncrono desarrollado con FastAPI \citep{FastAPI_Documentation}, diseñado para ser ligero y sin estado (\textit{stateless}) en cuanto a la petición, pero manteniendo en memoria el estado completo del gemelo digital híbrido (modelo físico WNTR más el modelo corrector de IA).
+    
+    Para lograr la aceleración requerida por el algoritmo genético, se implementa una estrategia de orquestación mediante Docker Swarm \citep{DockerSwarm_Documentation}. Esta tecnología permite instanciar múltiples réplicas del microservicio de simulación, distribuyéndolas dinámicamente a través de los nodos físicos disponibles en el clúster. El tráfico entrante es gestionado por una instancia de NGINX \citep{NGINX_Documentation}, que actúa como balanceador de carga, distribuyendo las miles de peticiones de evaluación generadas por el optimizador entre las distintas réplicas activas. Esta arquitectura permite paralelizar masivamente el cálculo de la función de costo, reduciendo el tiempo de búsqueda de forma lineal con respecto a la cantidad de recursos de hardware agregados.
+
+    \item Motor de optimización:
+    el motor implementa la lógica metaheurística del AG. A diferencia de una implementación secuencial tradicional, este módulo dispone de una interfaz cliente asíncrona que aprovecha la concurrencia (\textit{multithreading}) para enviar lotes de solicitudes de simulación simultáneas.
+    
+    Durante cada generación del AG, la evaluación de la aptitud de la población no se realiza individuo por individuo, sino que se distribuye a través de la red hacia el balanceador de carga. Esto permite que múltiples planes de riego sean simulados al mismo tiempo por las distintas instancias del servicio de inferencia, lo que permite aprovechar al máximo la capacidad de cómputo instalada y cumplir con los estrictos requisitos temporales.
 \end{enumerate}
 
 
+\begin{figure}[ht]
+    \centering
+	\includegraphics[width=\textwidth]{Figures/despacho_v1.pdf}
+    \caption{Diagrama de capas del sistema de riego, donde el foco del trabajo es la capa de gestión y optimización.}
+    \label{fig:diagrama_capas}
+\end{figure}
+
+\pagebreak
+
+%----------------------------------------------------------------------------------------
+%	SECTION 3.2
+%----------------------------------------------------------------------------------------
 \section{Implementación del gemelo digital híbrido}
+\label{sec:implementacion_gemelo}
+
+El gemelo digital se desarrolló bajo el paradigma de caja gris, fusionando un modelo hidráulico de primeros principios con un componente de aprendizaje profundo (\textit{deep learning}). Este último tiene la función específica de predecir y corregir los errores residuales de la simulación física. Para asegurar la vigencia del sistema, la solución se integró en un ciclo de vida automatizado que ejecuta entrenamientos periódicos del modelo ante la llegada de nuevos datos de campo.
+
+La figura \ref{fig:gemelo_hibrido} presenta el esquema conceptual del sistema implementado, ilustrando el flujo de información desde la ingesta de datos de campo hasta la generación del estado corregido del sistema.
+
+A continuación, se detalla la ingeniería aplicada en cada uno de sus componentes constitutivos.
+
+\subsection{Construcción y parametrización del modelo físico}
+\label{subsec:modelo_fisico}
+
+El componente físico ($f_{fisico}$) se implementó utilizando la biblioteca \textit{Water Network Tool for Resilience} (WNTR) \citep{WNTRShaw2018}. Se optó por definir la topología de la red mediante funciones de Python en lugar de utilizar archivos de configuración estáticos. Esta estrategia permite modificar las propiedades de la infraestructura, como la curva de la bomba o la longitud de los laterales, alterando directamente las variables del código fuente, lo cual elimina la necesidad de regenerar archivos externos ante cada cambio en los parámetros de diseño.
+
+La red se modeló representando explícitamente los componentes hidráulicos principales: la fuente de agua subterránea, el grupo de bombeo, el cabezal de filtrado y la red de distribución. Para garantizar la fidelidad de la simulación base, se configuraron los siguientes parámetros constitutivos extraídos de las especificaciones técnicas:
+
+\begin{itemize}
+    \item Modelo de fricción en tuberías: para la cuantificación de las pérdidas por fricción, se seleccionó la ecuación de Hazen-Williams. Se estableció un coeficiente de rugosidad adimensional $C=130.0$, aplicado de manera uniforme a los tramos de conducción principal y a los laterales de riego, valor que corresponde a tuberías plásticas con un desgaste operativo estándar.
+
+    \item Caracterización de la bomba: el comportamiento del sistema de bombeo se representó mediante la curva característica de altura manométrica-caudal ($H-Q$). Esta curva se definió mediante la interpolación de 16 puntos operativos, abarcando el rango completo desde la presión a válvula cerrada ($H \approx 124$ m) hasta el caudal máximo.
+
+    \item Comportamiento de los emisores: se configuró un exponente de flujo $\gamma = 0.46$, propio del régimen turbulento en los emisores instalados, y un coeficiente de descarga base ajustado a las especificaciones del fabricante.
+\end{itemize}
+
+Sin embargo, la simulación individual de los miles de goteros presentes en el campo generaba una carga computacional incompatible con los tiempos de respuesta requeridos. Para solucionar este desafío, se implementó un algoritmo de agregación espacial en la función de generación de laterales. Este algoritmo discretiza cada lateral de riego en un número fijo de segmentos. En lugar de instanciar cada emisor físico, se asigna un emisor equivalente a cada nodo de discretización, cuyo coeficiente de descarga se calcula como la suma aritmética de los coeficientes de los goteros reales contenidos en dicho segmento. Esta técnica reduce la dimensión de la matriz hidráulica que resuelve el motor WNTR, disminuyendo el tiempo de ejecución de la simulación de segundos a milisegundos.
+
+Finalmente, la ejecución del modelo se configuró bajo el esquema de análisis dirigido por presión (PDA). A diferencia del modelo de demanda base (DDA), que fija el consumo independientemente del estado hidráulico, el esquema PDA calcula el caudal real entregado por los emisores como una función de la presión nodal instantánea.
+
+\subsection{Ingeniería de datos y modelo de corrección}
+\label{subsec:componente_corrector}
+
+El componente de inteligencia artificial ($f_{AI}$) se diseñó con el objetivo específico de predecir el residual ($R$), definido como la diferencia entre el caudal real medido y la estimación teórica del modelo físico base. Para garantizar la calidad de la información de entrenamiento, el flujo de datos inicia con una etapa de limpieza rigurosa en la que se aplican filtros para eliminar registros inconsistentes, tales como instantes donde los datos reportan caudales positivos y válvulas cerradas. 
+
+Sobre el conjunto de datos depurado, se ejecutó un proceso de ingeniería de características orientado a capturar las no linealidades del sistema hidráulico. A las variables base disponibles, la presión real medida en cabecera y el caudal simulado por el modelo físico, se sumaron variables sintéticas. Se generó el conteo total de válvulas activas (\texttt{valve\_count}) mediante la suma de los estados binarios de los sectores, y se creó un término de interacción física (\texttt{presion\_x\_valve\_count}) multiplicando la presión real por dicho conteo. Esta última variable actúa como un estimador de la impedancia hidráulica total del sistema, facilitando a la red neuronal la distinción entre variaciones de caudal debidas a la operación de la bomba y aquellas causadas por apertura y cierre de válvulas.
+
+Previo al entrenamiento, se aplicó una estrategia de saneamiento estadístico sobre la variable objetivo (el residual), eliminando valores atípicos (\textit{outliers}) mediante el método del rango intercuartílico (IQR). Posteriormente, los datos se dividieron cronológicamente en subconjuntos de entrenamiento, validación y prueba, y se normalizaron las características numéricas utilizando un escalador estándar (StandardScaler). Es fundamental destacar que el escalador se ajusta exclusivamente con los parámetros estadísticos del conjunto de entrenamiento y luego se utiliza para transformar los conjuntos restantes, evitando así la fuga de información estadística (\textit{data leakage}) hacia los datos de validación.
+
+Finalmente, el modelo de corrección se implementó utilizando un MLP desarrollado con la biblioteca PyTorch \citep{Paszke2019_PyTorch}. La arquitectura de la red, compuesta por capas densas con funciones de activación no lineales, se optimizó para realizar la regresión del valor residual a partir del vector de características procesado. El proceso de entrenamiento minimiza la función de pérdida de error MSE e integra un mecanismo de parada temprana (\textit{early stopping}) que monitorea el desempeño en el conjunto de validación, previniendo el sobreajuste y garantizando la robustez del modelo ante nuevas condiciones operativas.
+
+\pagebreak
+
+\subsection{Ciclo de vida y gestión de artefactos (MLOps)}
+\label{subsec:ciclo_vida_mlops}
+
+La implementación del gemelo digital trasciende el código fuente. Se monta sobre una infraestructura de operaciones de aprendizaje automático (MLOps) orquestada por Apache Airflow \citep{AirflowApache_Orchestration}. Este sistema gestiona el flujo de datos desde su ingesta hasta el despliegue, estructurado en las siguientes etapas:
+
+\begin{itemize}
+    \item Gestión de datos en capas: se utiliza un Data Lake basado en MinIO para almacenar los datos en tres estadios de refinamiento: crudos (\textit{raw}), intermedios (\textit{intermediate}) y procesados (\textit{primary}). Esta arquitectura de capas permite la trazabilidad y la reproducibilidad de cualquier versión del \textit{dataset}.
+    
+    \item Registro de experimentos: cada ejecución del \textit{pipeline} de entrenamiento registra automáticamente las métricas de desempeño (RMSE, $R^2$) y los artefactos resultantes (el modelo serializado y los objetos escaladores) en un servidor de MLflow \citep{MLflowDatabricks}. Esto permite analizar la evolución del desempeño del modelo a lo largo del tiempo.
+    
+    \item Validación y promoción automática: el \textit{pipeline} incluye una etapa de decisión autónoma. Tras el entrenamiento, el sistema evalúa el nuevo modelo frente a un conjunto de prueba. Solo si el nuevo modelo supera en precisión al vigente (reducción del RMSE), se promueve automáticamente mediante el etiquetado de alias en el registro, quedando disponible inmediatamente para el servicio de inferencia.
+\end{itemize}
+
+\subsection{Orquestación y ejecución en el servicio de inferencia}
+\label{subsec:orquestacion_inferencia}
+
+El servicio de inferencia (\textit{Snapshot API}) es el componente que ejecuta el gemelo digital híbrido. Su función principal es coordinar la comunicación entre los modelos almacenados y las solicitudes de simulación que envía el optimizador. El código se diseñó para cargar todo lo necesario en la memoria RAM al iniciar el servidor, evitando así lecturas lentas de disco durante la operación.
+
+Al arrancar, el servicio se conecta al registro de MLflow y descarga la versión del modelo de inteligencia artificial marcada como \textit{production}. También inicializa el modelo físico WNTR. Esta preparación previa permite que el sistema responda a las peticiones de simulación mas rápidamente.
+
+Cada vez que el optimizador solicita evaluar un plan de riego, el servicio ejecuta los siguientes pasos de forma secuencial:
+
+\begin{enumerate}
+    \item Cálculo físico base: el servicio ejecuta primero el simulador WNTR. Este paso entrega un valor de caudal y las presiones para la configuración de válvulas solicitada.
+
+    \item Preparación de datos para la IA: el sistema toma los resultados físicos y calcula las variables adicionales que necesita la red neuronal, como la cantidad de válvulas abiertas y su interacción con la presión. Luego ajusta la escala de estos valores utilizando el artefacto guardado en MLFlow durante el entrenamiento.
+
+    \item Corrección del error: la red neuronal recibe los datos preparados y predice el error residual del modelo físico. El sistema suma este error a la predicción física inicial para obtener el caudal final corregido.
+
+    \item Respuesta: con el caudal corregido, el sistema estima cómo se distribuye el caudal residual entre los sectores activos y calcula cuánto desciende el nivel del acuífero usando un modelo de pozo específico. Estos valores finales se envían de vuelta al optimizador para que evalúe si el plan es bueno o malo.
+\end{enumerate}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/gemelo_hibrido.pdf}
+    \caption{Esquema del gemelo digital híbrido: integración del pipeline de entrenamiento (MLOps), el modelo físico WNTR y el corrector de IA en el servicio de inferencia.}
+    \label{fig:gemelo_hibrido}
+\end{figure}
+
+\pagebreak
 
 \section{Implementación del optimizador de despacho (GA)}
 

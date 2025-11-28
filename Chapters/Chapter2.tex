@@ -1,59 +1,40 @@
 \chapter{Introducción específica}
 \label{chap:introduccion_especifica}
 
-En este capítulo se presentan los fundamentos teóricos que sustentan la arquitectura de optimización del proyecto. Se detalla el modelado híbrido de caja gris, la formulación matemática del problema como un MINLP, la teoría de los Algoritmos Genéticos como solución metaheurística y el Método de Funciones de Penalización para el manejo de restricciones.
+En este capítulo se presentan los fundamentos teóricos y las herramientas que sustentan la arquitectura de optimización propuesta. Se detalla el modelado híbrido de caja gris, la formulación del problema MINLP, la configuración del algoritmo genético y las métricas de evaluación empleadas.
 
 \section{Teoría del modelado híbrido: corrección de residuales}
 \label{sec:teoria_modelado_hibrido}
 
-La simulación de sistemas físicos complejos, como lo es un sistema hidráulico, se aborda generalmente desde dos enfoques principales \citep{ref7}.
+La simulación de sistemas hidráulicos presenta un compromiso entre la consistencia física y la precisión operativa. Mientras que los modelos de caja blanca (determinísticos) como EPANET garantizan coherencia física pero sufren sesgos por incertidumbre paramétrica, los modelos de caja negra (estocásticos) ofrecen alta precisión pero carecen de robustez física \citep{ref7, ref4}.
 
-El primer enfoque es el modelado de caja blanca (\textit{White-Box}), de naturaleza determinística, basado en leyes físicas de la mecánica de fluidos. \citep{ref7, ref8}. El motor de simulación hidráulico \texttt{EPANET} es un ejemplo representativo de este enfoque \citep{ref9, ref10}. La ventaja principal de los modelos de caja blanca es su interpretabilidad y la garantía de predicciones físicamente consistentes. Sin embargo, los modelos que se basan únicamente en leyes físicas tienen una limitación fundamental: debido a simplificaciones, inevitablemente producen desviaciones significativas, o sesgos, en comparación con la realidad \citep{ref4, ref5}. Estos sesgos surgen de dinámicas no modeladas y de la incertidumbre en los parámetros intrínsecos, como la rugosidad exacta de las tuberías (el coeficiente $C$ en la ecuación de Hazen-Williams) o las pérdidas de carga menores no contempladas en el modelo .
+Para balancear estas limitaciones, este trabajo implementa un modelado de caja gris (\textit{gray-box}) mediante una arquitectura de corrección de residuales \citep{ref5}. En este esquema, el modelo físico ($f_{fisico}$) aporta la línea base robusta, mientras que un modelo de inteligencia artificial ($f_{AI}$) predice y corrige el error sistemático o residual ($R$) del primero.
 
-El segundo enfoque es el modelado de caja negra (\textit{Black-Box}). Estos modelos son de naturaleza estocástica, como las redes neuronales (NN) o los perceptrones multicapa (MLP), que mapean entradas a salidas basándose puramente en datos observados \citep{ref7, ref8}. Su fortaleza es la capacidad de modelar relaciones no lineales extremadamente complejas sin necesidad de conocer el modelo físico del sistema \citep{ref6}. Sin embargo, sus desventajas son críticas para sistemas de ingeniería. Primero, requieren volúmenes de datos de entrenamiento que a menudo son muy grandes \citep{ref4, ref5}. Segundo, y más importante, son propensos a generar predicciones que pueden ser físicamente inconsistentes, como violar la conservación de masa, un riesgo inaceptable para un sistema de control de recursos hídricos .
-
-Como solución, en este proyecto se propone un modelado de caja gris (\textit{Gray-Box}), un paradigma que busca combinar las fortalezas de ambos enfoques\citep{ref6}. Específicamente, se implementa la arquitectura de corrección de residuales .
-
-En este paradigma, el modelo de inteligencia artificial no intenta aprender la totalidad del sistema desde cero. En su lugar, el modelo físico ($f_{fisico}$) proporciona la predicción principal y la robustez, mientras que el modelo de IA ($f_{AI}$) tiene una tarea mucho más acotada y factible: aprender y predecir el error residual (el sesgo sistemático) del modelo físico \citep{ref5}.
-
-La formulación matemática de esta arquitectura híbrida es :
+La formulación matemática de esta arquitectura híbrida se define en la ecuación \ref{f_hibrido}:
 \begin{equation}\label{f_hibrido}
 f_{hybrid} = f_{fisico} + f_{AI}(\mathbf{X})
 \end{equation}
-Donde el objetivo de entrenamiento (el \textit{target}) para $f_{AI}$ es el residual $R$, definido como :
-\begin{equation}
-R = Y_{real} - Y_{fisico}
-\end{equation}
-La literatura académica lo describe como una herramienta de predicción eficiente \citep{ref4, ref5}, donde el modelo $f_{fisico}$ aporta la consistencia y el $f_{AI}$ aporta la precisión, corrigiendo los sesgos propios del primero .
-
-A continuación se analizan ambas partes de la ecuación \ref{f_hibrido}.
+donde el objetivo de entrenamiento para $f_{AI}$ es el residual $R = Y_{real} - Y_{fisico}$.
 
 \subsection{Componente físico ($f_{fisico}$)}
 \label{subsec:componente_fisico}
 
-El componente físico se desarrolla utilizando el motor de simulación \texttt{EPANET} \citep{ref9, ref10}. Este modelo se rige por leyes físicas claves que definen la complejidad del problema:
+El componente físico se desarrolla utilizando el motor de simulación EPANET \citep{ref9, ref10}. Este modelo se rige por leyes físicas claves que definen la complejidad del problema:
 
 \begin{enumerate}
-    \item Pérdida de carga por fricción: se utiliza la ecuación de Hazen-Williams, una relación empírica que define la pérdida de carga ($H_f$) en una tubería. 
-    \begin{equation}
+    \item Pérdida de carga por fricción: se utiliza la ecuación de Hazen-Williams (ecuación \ref{HW}) \citep{meschter_2001_hazen}, una relación empírica que define la pérdida de carga ($H_f$) en una tubería. 
+    \begin{equation}\label{HW}
     H_f = \frac{10.67 \cdot L}{C^{1.852} \cdot D^{4.87}} \cdot Q^{1.852}
     \end{equation}
     
-    \item Comportamiento de emisores (goteros): el caudal de salida ($q_e$) en un gotero se modela usando la ley de potencia, que relaciona el caudal con la presión ($p$) en el nodo. En el proyecto se utiliza un exponente $\gamma$ de 0.46, característico del equipamiento instalado, introduciendo otra no linealidad.
-    .
-    \begin{equation}
+    \item Comportamiento de emisores (goteros): el caudal de salida ($q_e$) se modela mediante la ecuación caudal-presión del emisor \citep{keller_karmeli_1975}, una relación empírica de tipo potencia (ecuación \ref{ley_potencia}) que vincula el caudal con la presión ($p$) en el nodo. En este trabajo se utiliza un exponente $\gamma$ de 0,46, característico del equipamiento instalado, introduciendo otra no linealidad.
+    \begin{equation}\label{ley_potencia}
     q_e = C_d \cdot p^{\gamma}
     \end{equation}
 \end{enumerate}
 
-Además, se emplea la simulación en modo Análisis Dirigido por Presión (PDA). A diferencia del Análisis Dirigido por Demanda (DDA), que asume que la demanda siempre se satisface, el PDA ajusta el caudal entregado si la presión en un nodo cae, ofreciendo una simulación mucho más realista para un sistema de riego solar donde la presión de la bomba varía constantemente.
-
 \subsection{Componente corrector ($f_{AI}$)}
-\label{subsec:componente_corrector}
-
-El componente de IA, $f_{AI}$, se implementa como un Perceptrón Multicapa (MLP).
-
-El vector de características $\mathbf{X}$ está compuesto por variables que describen tanto el estado operativo del sistema como sus acciones de control. Entre las primeras se incluyen magnitudes medidas en campo, como la presión a la salida de la bomba y el nivel freático del acuífero; entre las segundas, las decisiones de operación, como la apertura o cierre de válvulas. Además, la salida generada por el modelo físico se incorpora explícitamente como una de las entradas del MLP. De este modo, la red neuronal aprende a estimar el sesgo sistemático del modelo hidráulico en función de las condiciones reales de operación, actuando como un corrector residual que ajusta las predicciones físicas hacia valores más próximos a las observaciones experimentales.
+El componente de corrección se implementa mediante un perceptrón multicapa (MLP). Este recibe como entrada el estado operativo del sistema (presión de bomba, nivel freático y configuración de válvulas) junto con la salida del modelo físico, aprendiendo a estimar la diferencia entre la simulación teórica y los datos reales medidos.
 
 \section{Formulación del problema de optimización}
 \label{sec:formulacion_optimizacion}
@@ -63,11 +44,11 @@ Una vez que se dispone de una función de aptitud $f_{hybrid}$ de alta fidelidad
 \subsection{Formulación matemática formal}
 \label{subsec:formulacion_formal}
 
-El problema de optimización del despacho de riego consiste en encontrar el cronograma de apertura y cierre de válvulas que maximice un conjunto de objetivos, sujeto a las restricciones físicas de la red hidráulica y la disponibilidad de recursos. A continuación, se presenta una nomenclatura y formulación general del modelo.
+El problema de optimización del despacho de riego consiste en encontrar el cronograma de apertura y cierre de válvulas que maximice un conjunto de objetivos, sujeto a las restricciones físicas de la red hidráulica y la disponibilidad de recursos. En tabla \ref{tab:nomenclatura}, se presenta una nomenclatura y formulación general del modelo.
 
 \begin{table}[h!]
 \centering
-\caption{Nomenclatura del Modelo de Optimización. }
+\caption{Nomenclatura del modelo de optimización. }
 \label{tab:nomenclatura}
 \begin{tabular}{l p{10cm}}
 \toprule
@@ -89,40 +70,40 @@ $w_u, w_t, w_a$ & Ponderaciones estratégicas para los objetivos de la función.
 \end{tabular}
 \end{table}
 
-\subsubsection{Función objetivo ponderada}
+\subsection{Función objetivo ponderada}
 
-Un enfoque común para problemas multiobjetivo es formular una función de aptitud unificada. Esta función es una suma ponderada que puede incluir objetivos agronómicos, de eficiencia y de sostenibilidad:
+Un enfoque común para problemas multiobjetivo es formular una función de aptitud unificada. Esta función es una suma ponderada que puede incluir objetivos agronómicos, de eficiencia y de sostenibilidad. Esta se muestra en la ecuación \ref{fun_costo}:
 
-\begin{equation}
+\begin{equation}\label{fun_costo}
 \max_{\mathbf{V}} \left( w_u \cdot \mathcal{U}(\mathbf{V}) - w_t \cdot \mathcal{T}_{bombeo}(\mathbf{V}) - w_a \cdot \mathcal{S}_{acuifero}(\mathbf{V}) \right)
 \end{equation}
 
-Donde :
+donde:
 \begin{itemize}
-    \item $\mathcal{U}(\mathbf{V})$: Una métrica de uniformidad (ej. minimizar el déficit cuadrático $\sum (Q_{objetivo,i} - Q_{entregado,i})^2$), que se busca maximizar.
-    \item $\mathcal{T}_{bombeo}(\mathbf{V})$: Una métrica del tiempo de bombeo (ej. $\sum v_{i,t}$), que se busca minimizar.
-    \item $\mathcal{S}_{acuifero}(\mathbf{V})$: Una métrica del estrés sobre el acuífero (ej. la extracción total de agua), que se busca minimizar.
+    \item $\mathcal{U}(\mathbf{V})$: una métrica de uniformidad, que se busca maximizar.
+    \item $\mathcal{T}_{bombeo}(\mathbf{V})$: una métrica del tiempo de bombeo, que se busca minimizar.
+    \item $\mathcal{S}_{acuifero}(\mathbf{V})$: una métrica del estrés sobre el acuífero, que se busca minimizar.
 \end{itemize}
 
-\subsubsection{Restricciones del problema}
+\subsection{Restricciones del problema}
 
 La maximización está sujeta a un conjunto de restricciones físicas y operativas:
 
 \begin{enumerate}
-    \item Restricción de potencia: la potencia consumida por la bomba no puede exceder la potencia disponible en ningún momento.
-    \begin{equation}
+    \item Restricción de potencia: la potencia consumida por la bomba no puede exceder la potencia disponible en ningún momento, de acuerdo a la ecuación \ref{rest_potencia}.
+    \begin{equation}\label{rest_potencia}
     P_{consumida,t}(f_{hybrid}(\mathbf{V})) \le P_{disponible,t} \quad \forall t \in \mathcal{T}
     \end{equation}
     
-    \item Restricción de sostenibilidad (ej. nivel freático): el nivel del recurso no debe caer por debajo del límite de seguridad.
-    \begin{equation}
+    \item Restricción de sostenibilidad (ej. nivel freático): el nivel del recurso no debe caer por debajo del límite de seguridad, según la ecuación \ref{nivel_frea}.
+    \begin{equation}\label{nivel_frea}
     N_{recurso,t}(f_{hybrid}(\mathbf{V})) \ge N_{min} \quad \forall t \in \mathcal{T}
     \end{equation}
     
-    \item Restricciones hidráulicas (implícitas): las leyes físicas de la red (Hazen-Williams, Ley de Potencia) están encapsuladas dentro de la evaluación de la función $f_{hybrid}$ .
+    \item Restricciones hidráulicas (implícitas): las leyes físicas de la red están encapsuladas dentro de la evaluación de la función $f_{hybrid}$ .
     
-    \item Variables de decisión binarias: las decisiones de control de válvulas son binarias.
-    \begin{equation}
+    \item Variables de decisión binarias: las decisiones de control de válvulas son binarias, como lo indica la ecuación \ref{valv_bin}.
+    \begin{equation}\label{valv_bin}
     v_{i,t} \in \{0, 1\} \quad \forall i \in \mathcal{I}, \forall t \in \mathcal{T}
     \end{equation}
 \end{enumerate}
@@ -130,24 +111,16 @@ La maximización está sujeta a un conjunto de restricciones físicas y operativ
 \section{Teoría de optimización: algoritmos genéticos}
 \label{sec:teoria_AG}
 
-El algoritmo genético consiste en una búsqueda estocástica global basada en los principios de la evolución natural y la supervivencia del más apto \citep{ref15, ref16}. Este algoritmo es adecuado para navegar espacios de búsqueda complejos, no convexos y de alta dimensionalidad. Su uso acoplado a simuladores como \texttt{EPANET} para la optimización de redes de agua es una técnica documentada en la literatura \citep{ref9, ref10}.
-
-\subsection{Anatomía de un algoritmo genético}
-\label{subsec:anatomia_AG}
+El algoritmo genético consiste en una búsqueda estocástica global basada en los principios de la evolución natural y la supervivencia del más apto \citep{ref15, ref16}. Este algoritmo es adecuado para navegar espacios de búsqueda complejos, no convexos y de alta dimensionalidad. Su uso acoplado a simuladores como EPANET para la optimización de redes de agua es una técnica documentada en la literatura \citep{ref9, ref10}.
 
 El AG opera sobre una población de cromosomas, donde cada cromosoma representa una solución candidata completa al problema de optimización.
 
-\subsubsection{Codificación del cromosoma (representación de la solución)}
+\subsection{Codificación del cromosoma (representación de la solución)}
 \label{subsubsec:codificacion_cromosoma}
 
 El cromosoma es la estructura de datos que codifica un plan de despacho de riego \citep{ref17}. La elección de la codificación es fundamental para el rendimiento del algoritmo.
 
-\begin{itemize}
-    \item \textit{Permutation encoding} (codificación por permutación): en este esquema, el cromosoma es una permutación de elementos. Se utiliza para problemas de secuenciación u ordenamiento, como el Problema del Viajante (TSP) \citep{ref18}.
-    \item \textit{Value encoding} (codificación por valor): En este esquema, el cromosoma es una cadena de valores (enteros, reales o binarios) donde cada gen representa un valor específico, no una posición en una secuencia \citep{ref18}.
-\end{itemize}
-
-Para el problema de despacho de riego, donde la decisión es asignar un estado (abierto/cerrado) a una válvula en un intervalo de tiempo, la codificación por valor binario es la más adecuada. Si el horizonte de planificación $T$ se discretiza en $N_T$ intervalos y hay $N_V$ válvulas, un cromosoma $C$ es un vector binario de longitud $N_V \times N_T$. Aunque se almacena como un vector, conceptualmente representa una matriz donde cada elemento $v_{i,t}$ es un gen:
+Se utiliza una codificación por valor binario (\textit{value encoding}). El cromosoma es una cadena de valores (enteros, reales o binarios) donde cada gen representa un valor específico. Si el horizonte de planificación $T$ se discretiza en $N_T$ intervalos y hay $N_V$ válvulas, un cromosoma $C$ es un vector binario de longitud $N_V \times N_T$. Aunque se almacena como un vector, conceptualmente representa una matriz donde cada elemento $v_{i,t}$ es un gen, como muestra la ecuación \ref{eq:cromosoma}:
 \begin{equation}
 \label{eq:cromosoma}
 C = 
@@ -158,103 +131,53 @@ v_{2,1} & v_{2,2} & \dots  & v_{2,N_T} \\
 v_{N_V,1} & v_{N_V,2} & \dots & v_{N_V,N_T}
 \end{bmatrix}
 \end{equation}
-Donde $v_{i,t} \in \{0, 1\}$ representa el estado (cerrado/abierto) de la válvula $i$ en el tiempo $t$.
+donde $v_{i,t} \in \{0, 1\}$ representa el estado (cerrado/abierto) de la válvula $i$ en el tiempo $t$.
 
-\subsubsection{Operadores de selección}
-\label{subsubsec:operadores_seleccion}
-
-La selección determina qué cromosomas (soluciones) de la población actual son elegidos para "reproducirse" y crear la siguiente generación, aplicando el principio de "supervivencia del más apto" \citep{ref19}. En la tabla \ref{tab:comparacion_seleccion} se comparan los operadores de selección más comunes.
-
-\begin{table}[h!]
-\centering
-\small % reduce tamaño de fuente para que entre sin saturar
-\setlength{\tabcolsep}{3pt} % reduce espacio horizontal entre columnas
-\renewcommand{\arraystretch}{1.15} % mejora el espaciado vertical
-\caption{Análisis comparativo de operadores de selección en AG.}
-\label{tab:comparacion_seleccion}
-\begin{tabular}{p{2.7cm} p{3.8cm} p{3.8cm} p{4cm}}
-\toprule
-\textbf{Operador} & \textbf{Mecanismo} & \textbf{Ventajas} & \textbf{Desventajas y riesgos} \\
-\midrule
-Roulette wheel selection (RWS) & 
-Asigna una probabilidad de selección $p_i$ proporcional a la aptitud $f_i$: $p_i = f_i / \sum f_k$ \citep{ref19}. &
-Simple. &
-Riesgo de convergencia prematura. Un individuo ``súper'' (con aptitud muy alta) puede dominar la población rápidamente, eliminando la diversidad genética \citep{ref19}. \\[0.5em]
-
-Tournament selection (TOS) &
-Elige $k$ (ej. $k=2$) individuos al azar de la población y selecciona al de mayor aptitud para la reproducción \citep{ref19}. &
-Computacionalmente eficiente; menor riesgo de convergencia prematura \citep{ref20, ref21}. &
-Si $k$ es muy grande converge más rápido pero con riesgo de caer en óptimos locales. \\[0.5em]
-
-Rank selection (LRS) &
-Selecciona individuos basándose en el \textit{ranking} de su aptitud, no en el valor absoluto. Asigna probabilidades linealmente al ranking \citep{ref19, ref22}. &
-Evita los problemas de escalado de RWS. &
-Más complejo computacionalmente que TOS; puede ser más lento en converger. \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-La literatura a menudo reporta que TOS ofrece un equilibrio superior entre exploración y explotación, y un mejor rendimiento general que RWS \citep{ref20, ref21}.
-
-\subsubsection{Operadores de cruce (\textit{crossover} / recombinación)}
-\label{subsubsec:operadores_cruce}
-
-El cruce (\textit{crossover}) es el operador principal de exploración. Combina la información genética de dos cromosomas padres para crear hijos (nuevas soluciones) \citep{ref16, ref19}. Los operadores dependen críticamente de la codificación del cromosoma, como se observa en la tabla \ref{tab:comparacion_cruce}.
-
-\begin{table}[h!]
-\centering
-\small % tamaño de fuente más compacto
-\setlength{\tabcolsep}{4pt} % espacio horizontal entre columnas
-\renewcommand{\arraystretch}{1.15} % mejora el espaciado vertical
-\caption{Análisis comparativo de operadores de cruce relevantes.}
-\label{tab:comparacion_cruce}
-\begin{tabular}{p{3cm} p{3cm} p{6cm} p{3.5cm}}
-\toprule
-\textbf{Operador} & \textbf{Codificación} & \textbf{Mecanismo} & \textbf{Caso de Uso Principal} \\
-\midrule
-Single-point crossover & 
-Valor (binario o real) &
-Se elige un punto de corte aleatorio. Los padres intercambian sus colas para crear dos hijos. &
-El operador de cruce más simple. \\[0.4em]
-
-Uniform crossover &
-Valor (binario o real) &
-Por cada gen en el cromosoma, se lanza una moneda (con probabilidad $p$) para decidir si el hijo hereda el gen del padre 1 o del padre 2 \citep{ref19}. &
-A menudo es el más efectivo para codificaciones binarias, ya que permite una alta recombinación de bloques de genes. \\[0.4em]
-
-\end{tabular}
-\end{table}
-
-
-\subsubsection{Operadores de mutación (diversidad)}
-\label{subsubsec:operadores_mutacion}
-
-La mutación es un operador secundario que introduce variaciones aleatorias en un cromosoma. Su propósito es mantener la diversidad genética y prevenir que la población converja prematuramente a un óptimo local \citep{ref16, ref19}.
+\subsection{Operadores evolutivos}
+Para garantizar la convergencia y diversidad de la población, se consideran los siguientes operadores:
 
 \begin{itemize}
-    \item \textit{bit flip mutation} (para codificación por valor binario): es el operador relevante para este problema. Se selecciona un gen (un bit $v_{i,t}$) al azar y se invierte su valor (0 $\rightarrow$ 1 ó 1 $\rightarrow$ 0).
-    \item \textit{swap mutation} (para codificación por permutación): Se seleccionan dos genes al azar en el cromosoma y se intercambian sus posiciones \citep{ref24}.
+    \item Selección por torneo: se eligen $k$ individuos al azar y se selecciona el de mejor aptitud \citep{ref20}.
+    
+    \item Cruce uniforme: dado que el cromosoma es una matriz binaria sin dependencia posicional estricta, el cruce uniforme permite una recombinación eficiente de los genes. Cada bit del hijo se selecciona probabilísticamente de uno de los dos padres, promoviendo una mayor exploración del espacio de búsqueda \citep{ref19}.
+    
+    \item Mutación \textit{bit-flip}: se aplica una mutación puntual donde un gen (estado de válvula) invierte su valor ($0 \to 1$ o $1 \to 0$) con una baja probabilidad. Esto introduce diversidad genética y previene el estancamiento en óptimos locales.
 \end{itemize}
 
-\section{Manejo de restricciones: funciones de penalización}
-\label{sec:manejo_restricciones}
+\section{Herramientas computacionales y métricas}
+\label{sec:herramientas_metricas}
 
-El desafío final en la aplicación de un AG a un problema de ingeniería del mundo real es el manejo de las restricciones. Los operadores de cruce y mutación son estocásticos y no tienen conocimiento de la física del sistema; por lo tanto, generarán inevitablemente cromosomas (planes de riego) que son infactibles.
+Para la materialización de los conceptos teóricos expuestos y la validación de los algoritmos de optimización, se selecciona un conjunto específico de herramientas de \textit{software} y métricas de desempeño.
 
-El método de funciones de penalización es la técnica de manejo de restricciones (CHT) más común para metaheurísticas \citep{ref2, ref10, ref13}. La filosofía es transformar un problema de optimización \textit{restringida} en un problema \textit{no restringido} \citep{ref2, ref3}. Esto se logra moviendo las restricciones \textit{desde} el \textit{solver} \textit{hacia} la \textit{función objetivo} \citep{ref2}. Se añade un término de penalización a la función de aptitud, que castiga a las soluciones infactibles \citep{ref1, ref2}. La formulación matemática general para un problema de minimización es \citep{ref2, ref3}:
+\subsection{Bibliotecas y entorno de desarrollo}
+El desarrollo se fundamenta en el lenguaje de programación \texttt{Python}, seleccionado por su extenso ecosistema para la ciencia de datos y la ingeniería. Las bibliotecas principales se categorizan según su función en la arquitectura:
+
+\begin{itemize}
+    \item Simulación hidráulica:
+    para la implementación del componente físico ($f_{fisico}$), se utiliza la biblioteca \textit{Water Network Tool for Resilience} (WNTR) \citep{WNTRShaw2018}. Esta herramienta, basada en el motor estándar EPANET, permite la simulación hidráulica dinámica, facilitando la inyección de parámetros de control en tiempo de ejecución.
+
+    \item Aprendizaje profundo: 
+    el componente corrector de residuales ($f_{AI}$) se construye sobre PyTorch \citep{Paszke2019_PyTorch}. Esta biblioteca ofrece la flexibilidad necesaria para diseñar arquitecturas de redes neuronales personalizadas y aprovecha la aceleración por hardware mediante tensores, lo cual es crítico para minimizar la latencia durante las miles de evaluaciones requeridas por el AG.
+
+    \item Procesamiento numérico y datos:
+    la manipulación eficiente de los cromosomas (matrices binarias) y las operaciones vectoriales del AG se realizan mediante NumPy, asegurando un bajo costo computacional en los operadores de cruce y mutación. Por su parte, Pandas se emplea para la gestión de series temporales y la ingeniería de características previa al entrenamiento.
+
+    \item Gestión del ciclo de vida: 
+    para garantizar la reproducibilidad científica del modelo híbrido, se utiliza MLflow. Esta plataforma permite registrar sistemáticamente los hiperparámetros del modelo, las versiones de los datos de entrenamiento y las métricas de validación, asegurando la trazabilidad completa del experimento.
+\end{itemize}
+
+\subsection{Métricas de evaluación}
+La evaluación del desempeño del sistema se aborda desde dos perspectivas complementarias: la precisión predictiva del gemelo digital híbrido y la eficacia del motor de búsqueda del AG.
+
+Para cuantificar la capacidad del modelo híbrido ($f_{hybrid}$) de replicar la realidad y corregir el sesgo del modelo físico, se emplea principalmente la raíz del error cuadrático medio (RMSE). 
 
 \begin{equation}
-Fitness_{penalizado}(x) = Fitness_{original}(x) + p(d(x, B))
+RMSE = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_{i} - \hat{y}_{i})^2}
 \end{equation}
 
-Donde $Fitness_{original}(x)$ es el objetivo, $d(x, B)$ es una métrica de la magnitud de la violación de la restricción, y $p(\cdot)$ es la función de penalización que traduce esa violación en un incremento del costo \citep{ref3}.
+donde $y_i$ representa el valor real medido y $\hat{y}_i$ la estimación del modelo. Adicionalmente, se utiliza el coeficiente de determinación ($R^2$) para medir la proporción de la varianza de los datos reales que es explicada por el modelo, validando su capacidad para capturar la dinámica del sistema.
 
-La eficacia del AG depende de cómo se diseña $p(\cdot)$ \citep{ref1}. Las estrategias varían desde la "pena de muerte" (\textit{death penalty}), que rechaza cualquier solución infactible, hasta enfoques más robustos como las penalizaciones dinámicas, donde la penalización aumenta con cada generación (ej. $p(V, t) = (\lambda \cdot t) \cdot V$) \citep{ref1, ref4}.
-
-
-
-
-
+Por otro lado, la calidad del proceso de optimización se evalúa mediante el monitoreo del costo de la mejor solución a lo largo de las generaciones, lo que permite verificar la convergencia del algoritmo. 
 
 
 
