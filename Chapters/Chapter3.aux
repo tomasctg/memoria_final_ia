@@ -25,11 +25,48 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Esquema del gemelo digital híbrido: integración del pipeline de entrenamiento (MLOps), el modelo físico WNTR y el corrector de IA en el servicio de inferencia.\relax }}{19}{figure.caption.8}\protected@file@percent }
 \newlabel{fig:gemelo_hibrido}{{3.2}{19}{Esquema del gemelo digital híbrido: integración del pipeline de entrenamiento (MLOps), el modelo físico WNTR y el corrector de IA en el servicio de inferencia.\relax }{figure.caption.8}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {3.3}Implementación del optimizador de despacho (GA)}{20}{section.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3.4}Implementación de funciones de costo y penalizaciones}{20}{section.3.4}\protected@file@percent }
+\newlabel{sec:implementacion_ga}{{3.3}{20}{Implementación del optimizador de despacho (GA)}{section.3.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces Diagrama de flujo del Algoritmo Genético Distribuido, destacando la etapa de evaluación paralela y el operador de reparación de restricciones físicas.\relax }}{20}{figure.caption.9}\protected@file@percent }
+\newlabel{fig:flujo_ag}{{3.3}{20}{Diagrama de flujo del Algoritmo Genético Distribuido, destacando la etapa de evaluación paralela y el operador de reparación de restricciones físicas.\relax }{figure.caption.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}Representación matricial y codificación}{21}{subsection.3.3.1}\protected@file@percent }
+\newlabel{subsec:codificacion}{{3.3.1}{21}{Representación matricial y codificación}{subsection.3.3.1}{}}
+\newlabel{cod:create_individual}{{3.1}{21}{Generación vectorizada del cromosoma como matriz binaria}{lstlisting.3.1}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {3.1}Generación vectorizada del cromosoma como matriz binaria.}{21}{lstlisting.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}Manejo de restricciones y reparación}{21}{subsection.3.3.2}\protected@file@percent }
+\newlabel{subsec:reparacion}{{3.3.2}{21}{Manejo de restricciones y reparación}{subsection.3.3.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.3}Arquitectura de evaluación distribuida y cliente asíncrono}{22}{subsection.3.3.3}\protected@file@percent }
+\newlabel{subsec:evaluacion_distribuida}{{3.3.3}{22}{Arquitectura de evaluación distribuida y cliente asíncrono}{subsection.3.3.3}{}}
+\newlabel{num_sims}{{3.2}{22}{Arquitectura de evaluación distribuida y cliente asíncrono}{equation.3.3.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.4}Diseño de la función de aptitud}{22}{subsection.3.3.4}\protected@file@percent }
+\newlabel{subsec:funcion_aptitud}{{3.3.4}{22}{Diseño de la función de aptitud}{subsection.3.3.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.5}Operadores evolutivos implementados}{23}{subsection.3.3.5}\protected@file@percent }
+\newlabel{subsec:operadores_evolutivos}{{3.3.5}{23}{Operadores evolutivos implementados}{subsection.3.3.5}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Selección por torneo}{23}{section*.10}\protected@file@percent }
+\newlabel{cod:selection}{{3.2}{23}{Implementación de la selección por torneo}{lstlisting.3.2}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {3.2}Implementación de la selección por torneo.}{23}{lstlisting.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Cruce uniforme matricial}{23}{section*.11}\protected@file@percent }
+\newlabel{cod:crossover}{{3.3}{23}{Implementación del cruce uniforme con operaciones de máscara}{lstlisting.3.3}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {3.3}Implementación del cruce uniforme con operaciones de máscara.}{23}{lstlisting.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Mutación bit-flip}{24}{section*.12}\protected@file@percent }
+\newlabel{cod:mutation}{{3.4}{24}{Lógica de mutación bit-flip}{lstlisting.3.4}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {3.4}Lógica de mutación bit-flip.}{24}{lstlisting.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Estrategia de elitismo}{24}{section*.13}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.4}Implementación de funciones de costo y penalizaciones}{25}{section.3.4}\protected@file@percent }
+\newlabel{sec:implementacion_costo}{{3.4}{25}{Implementación de funciones de costo y penalizaciones}{section.3.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.1}Costo base de eficiencia operativa}{25}{subsection.3.4.1}\protected@file@percent }
+\newlabel{eq:costo_eficiencia}{{3.3}{25}{Costo base de eficiencia operativa}{equation.3.4.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.2}Penalización agronómica cuadrática}{25}{subsection.3.4.2}\protected@file@percent }
+\newlabel{eq:penalizacion_volumen}{{3.4}{25}{Penalización agronómica cuadrática}{equation.3.4.4}{}}
+\newlabel{cod:fitness_calc}{{3.5}{26}{Cálculo de la penalización hídrica cuadrática}{lstlisting.3.5}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {3.5}Cálculo de la penalización hídrica cuadrática.}{26}{lstlisting.3.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.3}Manejo de restricciones físicas y ambientales}{26}{subsection.3.4.3}\protected@file@percent }
+\newlabel{eq:penalizacion_acuifero}{{3.5}{27}{Manejo de restricciones físicas y ambientales}{equation.3.4.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.4}Agregación final y ponderación}{27}{subsection.3.4.4}\protected@file@percent }
+\newlabel{eq:fitness_total}{{3.6}{27}{Agregación final y ponderación}{equation.3.4.6}{}}
 \@setckpt{Chapters/Chapter3}{
-\setcounter{page}{21}
-\setcounter{equation}{0}
-\setcounter{enumi}{4}
+\setcounter{page}{28}
+\setcounter{equation}{6}
+\setcounter{enumi}{2}
 \setcounter{enumii}{0}
 \setcounter{enumiii}{0}
 \setcounter{enumiv}{0}
@@ -38,17 +75,17 @@
 \setcounter{part}{0}
 \setcounter{chapter}{3}
 \setcounter{section}{4}
-\setcounter{subsection}{0}
+\setcounter{subsection}{4}
 \setcounter{subsubsection}{0}
 \setcounter{paragraph}{0}
 \setcounter{subparagraph}{0}
-\setcounter{figure}{2}
+\setcounter{figure}{3}
 \setcounter{table}{0}
 \setcounter{LT@tables}{0}
 \setcounter{LT@chunks}{0}
 \setcounter{caption@flags}{0}
 \setcounter{continuedfloat}{0}
-\setcounter{lstnumber}{1}
+\setcounter{lstnumber}{22}
 \setcounter{tabx@nest}{0}
 \setcounter{listtotal}{0}
 \setcounter{listcount}{0}
@@ -167,10 +204,10 @@
 \setcounter{bbx:relatedtotal}{0}
 \setcounter{subfigure}{0}
 \setcounter{subtable}{0}
-\setcounter{Item}{18}
+\setcounter{Item}{20}
 \setcounter{Hfootnote}{0}
-\setcounter{bookmark@seq@number}{33}
+\setcounter{bookmark@seq@number}{46}
 \setcounter{parentequation}{0}
-\setcounter{lstlisting}{0}
-\setcounter{section@level}{1}
+\setcounter{lstlisting}{5}
+\setcounter{section@level}{2}
 }

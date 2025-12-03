@@ -5,5 +5,6 @@
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {3.1}{\ignorespaces Diagrama de capas del sistema de riego, donde el foco del trabajo es la capa de gestión y optimización.\relax }}{15}{figure.caption.7}%
 \contentsline {figure}{\numberline {3.2}{\ignorespaces Esquema del gemelo digital híbrido: integración del pipeline de entrenamiento (MLOps), el modelo físico WNTR y el corrector de IA en el servicio de inferencia.\relax }}{19}{figure.caption.8}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Diagrama de flujo del Algoritmo Genético Distribuido, destacando la etapa de evaluación paralela y el operador de reparación de restricciones físicas.\relax }}{20}{figure.caption.9}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }

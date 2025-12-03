@@ -43,6 +43,9 @@ En este capítulo se describe la solución de software completa, detallando la a
 
 
 \section{Arquitectura general del software}
+
+
+
 \label{sec:arquitectura_general}
 
 El diseño del sistema de riego se basa en una arquitectura de cuatro capas: la capa física, la de control y adquisición, la de gestión y optimización, y la de presentación (ver figura \ref{fig:diagrama_capas}). Este trabajo se enfoca exclusivamente en la capa de gestión y optimización, que es responsable de transformar los datos históricos y de telemetría en un plan de despacho de riego óptimo.
@@ -184,9 +187,257 @@ Cada vez que el optimizador solicita evaluar un plan de riego, el servicio ejecu
     \label{fig:gemelo_hibrido}
 \end{figure}
 
+
+
+
 \pagebreak
 
 \section{Implementación del optimizador de despacho (GA)}
+\label{sec:implementacion_ga}
 
+La implementación del motor de optimización representa el componente inteligente de decisión del sistema. Su diseño responde a la naturaleza combinatoria y no lineal del problema de programación de riego, donde los métodos tradicionales de programación lineal mixta-entera resultan computacionalmente inviables debido a la complejidad de las funciones hidráulicas subyacentes.
+
+Se desarrolló un AG personalizado en el lenguaje Python, estructurado bajo el paradigma de programación orientada a objetos para garantizar la modularidad y el mantenimiento del código. Este motor integra lógica específica del dominio hidráulico directamente en la estructura de datos del cromosoma y en el ciclo de evaluación de aptitud. Esta integración permite reducir el espacio de búsqueda y acelerar la convergencia hacia soluciones factibles.
+
+La figura \ref{fig:flujo_ag} ilustra el flujo de control del sistema implementado, destacando la interacción con el clúster de simulación distribuida.
+
+\begin{figure}[ht]
+    \centering
+     \includegraphics[width=\textwidth]{Figures/ag.pdf}
+    \caption{Diagrama de flujo del Algoritmo Genético Distribuido, destacando la etapa de evaluación paralela y el operador de reparación de restricciones físicas.}
+    \label{fig:flujo_ag}
+\end{figure}
+
+\subsection{Representación matricial y codificación}
+\label{subsec:codificacion}
+
+El diseño de la estructura de datos para representar una solución candidata es fundamental para el rendimiento del algoritmo. Se optó por una codificación por valor binario (\textit{value encoding}), implementada no como una lista lineal, sino como una matriz bidimensional utilizando tipos de datos de bajo nivel (\texttt{uint8}) de la biblioteca NumPy.
+
+La matriz $C$, de dimensiones $N_{actuadores} \times N_{intervalos}$, modela el estado de todos los elementos activos del sistema:
+
+\begin{itemize}
+    \item Dimensión espacial (filas): la primera fila (índice 0) representa el estado de la bomba principal. Las filas subsiguientes (índices 1 a $N$) corresponden a las válvulas electro-comandadas de cada sector de riego.
+    \item Dimensión temporal (columnas: se define dinámicamente en función del horizonte de predicción. Para un horizonte típico de 24 horas con una resolución de 30 minutos, la matriz tiene 48 columnas.
+\end{itemize}
+
+Esta representación matricial permite aplicar operaciones vectorizadas para el cálculo de costos y la manipulación genética. El código \ref{cod:create_individual} muestra la implementación de la función generadora, que instancia el cromosoma completo en una sola operación optimizada, garantizando una sobrecarga de memoria mínima incluso para poblaciones grandes.
+
+\begin{lstlisting}[label=cod:create_individual, caption=Generación vectorizada del cromosoma como matriz binaria., language=Python]
+def _create_individual(self) -> np.ndarray:
+    """
+    Genera una matriz de (N_actuadores x N_intervalos)
+    con valores 0 o 1 (enteros de 8 bits).
+    """
+    return np.random.randint(0, 2, 
+                             size=(self.n_actuadores, self.n_intervals), 
+                             dtype=np.uint8)
+\end{lstlisting}
+
+\subsection{Manejo de restricciones y reparación}
+\label{subsec:reparacion}
+
+El espacio de búsqueda de cromosomas binarios aleatorios contiene una vasta cantidad de soluciones que son físicamente incoherentes. El caso más crítico es la configuración donde una o más válvulas de sector están abiertas ($v_{i,t}=1$) mientras la bomba principal está apagada ($v_{0,t}=0$). Evaluar estos individuos sería un desperdicio de recursos computacionales, ya que el simulador hidráulico arrojaría caudal cero o errores de convergencia numérica.
+
+Para abordar esto, se implementó un mecanismo de reparación dentro del motor del AG. Este operador actúa como un filtro de consistencia hidráulica que se aplica inmediatamente después de la inicialización y tras cada operación de cruce o mutación.
+
+La lógica aplica una operación de máscara booleana donde el estado de cada válvula en el tiempo $t$ se multiplica por el estado de la bomba en ese mismo instante. Matemáticamente, esto asegura la condición:
+\begin{equation}
+    v_{i,t} \leftarrow v_{i,t} \land v_{0,t} \quad \forall i > 0
+\end{equation}
+Esta técnica transforma el problema de una optimización con restricciones duras a una optimización sobre un subespacio factible, guiando la búsqueda hacia regiones productivas desde la primera generación.
+
+\subsection{Arquitectura de evaluación distribuida y cliente asíncrono}
+\label{subsec:evaluacion_distribuida}
+
+Uno de los desafíos técnicos más significativos en la optimización de sistemas físicos es el costo temporal de la función de evaluación (\textit{fitness function}). En este sistema, evaluar un plan de riego implica simular su comportamiento hidráulico completo para determinar el caudal entregado y el consumo energético.
+
+Para dimensionar la necesidad de una arquitectura escalable, consideremos un escenario estándar con una población de 50 individuos y un horizonte de 24 horas (48 intervalos). El número total de simulaciones hidráulicas ($N_{sims}$) requeridas por generación se calcula según ecuación \ref{num_sims}.
+\begin{equation}\label{num_sims}
+    N_{sims} = 50 \times 48 = 2.400 \text{ simulaciones/generación}
+\end{equation}
+Si cada simulación tomara apenas 0.1 segundos, una ejecución secuencial demoraría 4 minutos por generación, resultando en horas de cómputo para converger.
+
+Para resolver este cuello de botella, se diseñó una arquitectura de evaluación distribuida implementada en la clase \texttt{DigitalTwinClient}. Esta clase actúa como un proxy inteligente que desacopla el algoritmo genético del motor de simulación, gestionando la complejidad de la comunicación con el clúster de microservicios. Para ello, el cliente implementa un patrón de concurrencia a dos niveles para maximizar el rendimiento (\textit{throughput}):
+
+\begin{enumerate}
+    \item Sesiones persistentes: se instancia un objeto \texttt{requests.Session} que mantiene un \textit{pool} de conexiones TCP abiertas (\textit{Keep-Alive}) hacia el balanceador de carga. Esto elimina la latencia asociada al \textit{handshake} TCP/IP en cada una de las miles de peticiones enviadas.
+    
+    \item Paralelismo: el cliente descompone la matriz del cromosoma en $N$ tareas de simulación independientes, correspondientes a las columnas (intervalos de tiempo) donde la bomba está activa. Utilizando la biblioteca \texttt{concurrent}, estas tareas se envían de forma asíncrona a un ThreadPoolExecutor.
+\end{enumerate}
+
+Esta estrategia permite saturar la capacidad de procesamiento del clúster Docker Swarm, distribuyendo la carga de trabajo entre todos los núcleos disponibles en la infraestructura física. El cliente es responsable de reensamblar los resultados parciales asíncronos en una estructura de datos coherente para el cálculo del costo final.
+
+\subsection{Diseño de la función de aptitud}
+\label{subsec:funcion_aptitud}
+
+La función de aptitud es el componente que guía la búsqueda hacia soluciones que equilibren la eficiencia operativa con los objetivos requeridos por el agrónomo. El valor de aptitud para un individuo se calcula integrando los resultados parciales obtenidos de las simulaciones distribuidas.
+
+El método de evaluación agrega los volúmenes de agua simulados para cada sector y calcula una suma ponderada del costo energético y las penalizaciones por desvíos hídricos. El diseño prioriza una penalización cuadrática ($L2$) sobre la diferencia entre el volumen de agua entregado y el objetivo ($V_{target}$). 
+
+
+\subsection{Operadores evolutivos implementados}
+\label{subsec:operadores_evolutivos}
+
+La mecánica de evolución de la población se rige por tres operadores estocásticos seleccionados específicamente para trabajar sobre la representación matricial binaria del problema. A continuación, se detalla la implementación lógica y el código fuente de cada uno.
+
+\subsubsection{Selección por torneo}
+
+Para seleccionar los padres de la siguiente generación, se implementó el método de selección por torneo. Como se observa en el código \ref{cod:selection}, este operador selecciona aleatoriamente un subconjunto de individuos de la población (definido por \texttt{tournament\_size}) y determina el ganador basándose en el valor mínimo de aptitud. Esta implementación vectorizada utiliza NumPy para realizar el muestreo aleatorio y la comparación de índices, lo que resulta computacionalmente más eficiente que ordenar la población completa en cada generación.
+
+\begin{lstlisting}[label=cod:selection, caption=Implementación de la selección por torneo., language=Python]
+def _selection_tournament(self, fitness_scores: np.ndarray) -> np.ndarray:
+    """
+    Selecciona un individuo usando seleccion por torneo.
+    """
+    # Elegir 'tournament_size' individuos al azar
+    contenders_idx = np.random.randint(0, self.pop_size, 
+                                     self.tournament_size)
+    
+    # Obtener sus puntuaciones de aptitud
+    contender_fitness = fitness_scores[contenders_idx]
+    
+    # El ganador es el que tiene la aptitud MAS BAJA (menor costo)
+    winner_idx_in_contenders = np.argmin(contender_fitness)
+    winner_global_idx = contenders_idx[winner_idx_in_contenders]
+    
+    return self.population[winner_global_idx]
+\end{lstlisting}
+
+\subsubsection{Cruce uniforme matricial}
+
+Dada la estructura matricial del cromosoma, donde no existe una dependencia espacial fuerte entre intervalos de tiempo distantes, se optó por el cruce uniforme. El código \ref{cod:crossover} detalla la lógica de este operador. Se genera una máscara aleatoria de bits con las mismas dimensiones que el cromosoma. La descendencia se construye aplicando operaciones lógicas a nivel de bits (\textit{bitwise operations}). Esta técnica asegura una mezcla profunda del material genético, permitiendo recombinar patrones de riego exitosos independientemente de su ubicación temporal.
+
+\begin{lstlisting}[label=cod:crossover, caption=Implementación del cruce uniforme con operaciones de máscara., language=Python]
+def _crossover_uniform(self, parent1: np.ndarray, 
+                       parent2: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    child1, child2 = parent1.copy(), parent2.copy()
+    
+    if random.random() < self.crossover_rate:
+        # 1. Crear mascara aleatoria de 0s y 1s
+        mask = np.random.randint(0, 2, size=parent1.shape, dtype=np.uint8)
+        
+        # 2. Crear la mascara inversa
+        mask_inv = 1 - mask
+        
+        # 3. Aplicar mascaras para crear los hijos
+        child1 = (parent1 * mask) | (parent2 * mask_inv)
+        child2 = (parent2 * mask) | (parent1 * mask_inv)
+        
+    return child1, child2
+\end{lstlisting}
+
+\subsubsection{Mutación bit-flip}
+
+Para mantener la diversidad genética y evitar el estancamiento en óptimos locales, se aplicó un operador de mutación por inversión de bit. El código \ref{cod:mutation} muestra cómo el algoritmo recorre la matriz del cromosoma y, sujeto a una baja probabilidad de mutación ($P_m$), invierte el estado binario del gen ($1-x$). Es importante notar que, tras este operador, el individuo resultante es procesado nuevamente por la función de reparación descrita en la sección \ref{subsec:reparacion} para garantizar la coherencia física del sistema.
+
+\begin{lstlisting}[label=cod:mutation, caption=Lógica de mutación bit-flip., language=Python]
+def _mutation_bit_flip(self, chromosome: np.ndarray) -> np.ndarray:
+    mutated_chromosome = chromosome.copy()
+    for i in range(self.n_actuadores):
+        for t in range(self.n_intervals):
+            if random.random() < self.mutation_rate:
+                # Inversion de bit: 1 -> 0 o 0 -> 1
+                mutated_chromosome[i, t] = 1 - mutated_chromosome[i, t]
+    return mutated_chromosome
+\end{lstlisting}
+
+\subsubsection{Estrategia de elitismo}
+
+Finalmente, para asegurar la convergencia monótona del algoritmo y evitar la pérdida de las mejores soluciones encontradas debido a la estocasticidad de los operadores genéticos, se implementó una estrategia de elitismo. En cada generación, antes de aplicar la selección y el cruce, el algoritmo identifica los $N$ mejores individuos de la población actual (típicamente los 2 mejores) y los copia directamente a la siguiente generación sin modificaciones. Esto garantiza que la calidad de la mejor solución nunca disminuya a lo largo del proceso evolutivo.
+
+\pagebreak
+
+%----------------------------------------------------------------------------------------
+%	SECTION 3.4
+%----------------------------------------------------------------------------------------
+%----------------------------------------------------------------------------------------
+%	SECTION 3.4
+%----------------------------------------------------------------------------------------
 \section{Implementación de funciones de costo y penalizaciones}
+\label{sec:implementacion_costo}
 
+La función de costo, o función de aptitud, representa la traducción matemática de los objetivos del negocio y las restricciones físicas del sistema. Su implementación es crítica, ya que define el gradiente de búsqueda que guía al algoritmo genético a través del vasto espacio de soluciones posibles. En este trabajo, se implementó una función de evaluación compuesta que agrega múltiples objetivos competitivos, eficiencia energética, cumplimiento agronómico y sostenibilidad, en un único valor escalar.
+
+La lógica de evaluación reside en el método \texttt{evaluate\_schedule} de la clase cliente del gemelo digital. Este método actúa como un agregador de resultados, procesando los datos devueltos por el clúster de inferencia para cuantificar el desempeño global del plan de riego.
+
+\subsection{Costo base de eficiencia operativa}
+
+El primer componente de la función objetivo busca minimizar el uso de recursos operativos. Dado que el sistema es alimentado por energía solar fotovoltaica, el costo no es necesariamente monetario, sino temporal y de desgaste de equipos. Se definió la eficiencia en términos de tiempo de bombeo acumulado, calculada según la ecuación \ref{eq:costo_eficiencia}:
+
+\begin{equation}\label{eq:costo_eficiencia}
+    C_{eficiencia} = \sum_{t=1}^{T} v_{0,t} \cdot \Delta t
+\end{equation}
+
+donde $v_{0,t}$ representa el estado binario de la bomba en el intervalo $t$ (1 si está encendida, 0 si está apagada), y $\Delta t$ corresponde a la duración del intervalo de tiempo discretizado (en horas).
+
+Esta formulación incentiva al algoritmo a encontrar la solución más compacta posible, aquella que entrega el volumen de agua requerido en la menor cantidad de horas de operación, lo cual maximiza la vida útil del equipo de bombeo y libera ventanas de tiempo para mantenimiento o contingencias.
+
+\subsection{Penalización agronómica cuadrática}
+
+El objetivo primordial del sistema es satisfacer la demanda hídrica del cultivo. Sin embargo, en un escenario de recursos limitados, es común que no se pueda satisfacer la totalidad de la demanda de todos los sectores simultáneamente. El desafío de implementación consistió en definir cómo penalizar estos déficits para promover una distribución justa del agua.
+
+Se descartó el uso de una penalización lineal o diferencia absoluta en favor de una penalización cuadrática (norma L2), definida en la ecuación \ref{eq:penalizacion_volumen}:
+
+\begin{equation}\label{eq:penalizacion_volumen}
+    P_{volumen} = \sum_{i=1}^{N} (V_{sim, i} - V_{target, i})^2
+\end{equation}
+
+donde $N$ es el número total de sectores de riego, $V_{sim, i}$ es el volumen acumulado simulado para el sector $i$, y $V_{target, i}$ es el volumen objetivo definido por el agrónomo para dicho sector.
+
+El código \ref{cod:fitness_calc} presenta la implementación de esta lógica, donde se observa cómo el algoritmo itera sobre los resultados de volumen acumulado por sector y eleva al cuadrado la diferencia respecto al objetivo antes de sumarla al costo total.
+
+\begin{lstlisting}[label=cod:fitness_calc, caption=Cálculo de la penalización hídrica cuadrática., language=Python]
+# Logica de penalizacion L2 (Cuadratica)
+penalizacion_hidrica_cuadratica = 0.0
+desviacion_hidrica_absoluta_m3 = 0.0
+
+for sector_name, target_m3 in self.targets_m3.items():
+    # Obtener el volumen total simulado para el sector
+    achieved_m3 = total_volume_per_sector.get(sector_name, 0.0)
+    
+    # Calcular el desvio
+    desviacion = (achieved_m3 - target_m3)
+    
+    # Penalizacion cuadratica: castiga desproporcionadamente
+    # los grandes desvios
+    penalizacion_hidrica_cuadratica += (desviacion ** 2)
+    
+    # Metrica auxiliar para reporte
+    desviacion_hidrica_absoluta_m3 += abs(desviacion)
+
+# Calculo final de aptitud
+penalizacion_total = self.w_hidrico_quad * penalizacion_hidrica_cuadratica
+aptitud_total = costo_eficiencia + penalizacion_total
+\end{lstlisting}
+
+Esta decisión de diseño tiene un impacto profundo en el comportamiento del optimizador. Al elevar el error al cuadrado, un déficit grande en un solo sector se penaliza mucho más severamente que varios déficits pequeños distribuidos en varios sectores. En consecuencia, el algoritmo prioriza naturalmente soluciones que equilibran el riego entre parcelas, evitando sacrificar completamente un sector para beneficiar a otro, lo cual se alinea con las mejores prácticas agronómicas para mantener la uniformidad del cultivo.
+
+\subsection{Manejo de restricciones físicas y ambientales}
+
+Además de los objetivos de eficiencia y volumen, el sistema debe respetar restricciones operativas estrictas. La implementación aborda estas limitaciones mediante el método de funciones de penalización, transformando violaciones de límites físicos en costos adicionales que degradan la aptitud del individuo.
+
+En primer lugar, la operación de la bomba está condicionada por la curva de generación solar. El servicio de inferencia verifica en cada intervalo si la potencia requerida por el punto de operación hidráulico excede la potencia disponible pronosticada. Si se detecta una violación o déficit de potencia, el simulador retorna un estado de fallo. En el lado del cliente, se implementó una lógica que asigna un valor de aptitud infinito a ese intervalo ante un fallo energético. Esto actúa como una barrera suave que empuja rápidamente a la población del algoritmo genético lejos de las configuraciones que intentan operar la bomba fuera de las horas de radiación solar efectiva.
+
+Simultáneamente, para proteger el recurso hídrico subterráneo, se estableció un límite máximo de descenso del nivel dinámico del pozo. El gemelo digital estima este descenso en función del caudal total extraído en cada instante. La función de costo implementa una penalización dinámica para esta variable, expresada en la ecuación \ref{eq:penalizacion_acuifero}:
+
+\begin{equation}\label{eq:penalizacion_acuifero}
+    P_{acuifero} = \sum_{t=1}^{T} \max(0, N_{min} - N_{sim, t}) \times w_{sostenibilidad}
+\end{equation}
+
+donde $N_{min}$ es el nivel mínimo de seguridad del acuífero (profundidad máxima permitida), $N_{sim, t}$ es el nivel dinámico simulado en el tiempo $t$, y $w_{sostenibilidad}$ es un factor de ponderación que ajusta la severidad de la penalización.
+
+Esta implementación permite que el algoritmo explore soluciones cercanas al límite operativo del pozo, lo que maximiza la extracción permitida pero crea un fuerte gradiente de rechazo en cuanto se compromete la seguridad del acuífero.
+
+\subsection{Agregación final y ponderación}
+
+El valor final de aptitud, o \textit{fitness}, devuelto al motor genético es la suma ponderada de todos los componentes descritos, como muestra la ecuación \ref{eq:fitness_total}:
+
+\begin{equation}\label{eq:fitness_total}
+    Fitness = C_{eficiencia} + (w_q \cdot P_{volumen}) + (w_s \cdot P_{acuifero}) + (w_p \cdot P_{potencia})
+\end{equation}
+
+donde $w_q$, $w_s$ y $w_p$ son los coeficientes de ponderación para los objetivos de volumen, sostenibilidad del acuífero y cumplimiento de potencia, respectivamente.
+
+En la implementación actual, se asignó un peso preponderante a la penalización por volumen ($w_q$), estableciendo que la satisfacción de la demanda de riego es la prioridad jerárquica superior, seguida por la sostenibilidad del acuífero y, finalmente, la eficiencia operativa.
+
+Finalmente, cabe destacar que la arquitectura del software expone estos parámetros como variables de configuración externa. Tanto los pesos de la función de costo, como los volúmenes objetivo por sector, el horizonte de planificación y la discretización temporal, constituyen las entradas principales del sistema de gestión. Estos valores están diseñados para ser definidos por el usuario a través de una interfaz de consola o gráfica, lo que otorga al ingeniero agrónomo el control total para ajustar la estrategia de optimización y ejecutar el plan de riego según las necesidades específicas del cultivo y las condiciones operativas del momento.

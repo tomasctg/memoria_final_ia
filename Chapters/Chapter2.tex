@@ -169,9 +169,9 @@ El desarrollo se fundamenta en el lenguaje de programación \texttt{Python}, sel
 \subsection{Métricas de evaluación}
 La evaluación del desempeño del sistema se aborda desde dos perspectivas complementarias: la precisión predictiva del gemelo digital híbrido y la eficacia del motor de búsqueda del AG.
 
-Para cuantificar la capacidad del modelo híbrido ($f_{hybrid}$) de replicar la realidad y corregir el sesgo del modelo físico, se emplea principalmente la raíz del error cuadrático medio (RMSE). 
+Para cuantificar la capacidad del modelo híbrido ($f_{hybrid}$) de replicar la realidad y corregir el sesgo del modelo físico, se emplea principalmente la raíz del error cuadrático medio (RMSE) como se observa en la ecuación \ref{ecm}. 
 
-\begin{equation}
+\begin{equation}\label{ecm}
 RMSE = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_{i} - \hat{y}_{i})^2}
 \end{equation}
 
